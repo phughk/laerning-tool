@@ -1,15 +1,14 @@
+mod api;
+
 use axum::{routing::get, Router};
 use hyper::Server;
 use std::net::SocketAddr;
 
-async fn hello_world() -> &'static str {
-    "Hello, World!"
-}
 
 #[tokio::main]
 async fn main() {
     // Create a new Axum router
-    let app = Router::new().route("/", get(hello_world));
+    let app = api::build_router();
 
     // Define the address on which the server will listen
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
