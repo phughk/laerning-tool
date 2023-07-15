@@ -10,9 +10,7 @@ use serde_xml_rs::de::Deserializer;
 use std::fmt::Formatter;
 use std::fs;
 use std::io;
-use tracing::error;
 
-use crate::xml::error::Error;
 use xml::reader::EventReader;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -148,7 +146,7 @@ impl Default for LearningModuleEntryType {
 
 pub fn list_modules(directory: &str) -> Result<Vec<LearningModule>, error::Error> {
     let paths =
-        fs::read_dir(directory).map_err(|e| -> error::Error { error::Error::IoError {} })?;
+        fs::read_dir(directory).map_err(|_e| -> error::Error { error::Error::IoError {} })?;
     let mut ret = Vec::new();
     for path in paths {
         let module = read_module(path.as_ref().unwrap().path().display().to_string());
@@ -157,7 +155,7 @@ pub fn list_modules(directory: &str) -> Result<Vec<LearningModule>, error::Error
             Err(e) => {
                 let e_str = format!("{e:?}");
                 let dir_e =
-                    path.map_err(|stdIoError| -> error::Error { error::Error::IoError {} })?;
+                    path.map_err(|_std_io_error| -> error::Error { error::Error::IoError {} })?;
                 let path_str = format!("{dir_e:?}");
                 error::Error::ListModuleError {
                     error: e_str,

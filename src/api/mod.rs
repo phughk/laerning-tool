@@ -3,7 +3,7 @@ mod test;
 
 use crate::xml::LearningModule;
 use axum::routing::IntoMakeService;
-use axum::{routing::get, Extension, Router};
+use axum::{routing::get, Router};
 use std::sync::Arc;
 
 /// ApiState is all the information required to use the application

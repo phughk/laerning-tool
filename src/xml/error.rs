@@ -5,7 +5,6 @@ pub enum Error {
     IoError {},
     ListModuleError { error: String, path: String },
     SerdeError {},
-    Unknown { cause: String },
 }
 
 impl Display for Error {
@@ -18,7 +17,6 @@ impl Display for Error {
                 error, path
             ),
             Error::SerdeError {} => write!(f, "Serde serialization/deserialization error"),
-            Error::Unknown { cause } => write!(f, "Unknown error occurred: {}", cause),
         }
     }
 }

@@ -2,7 +2,7 @@ mod api;
 mod xml;
 
 use crate::xml::LearningModule;
-use axum::{routing::get, Router};
+
 use hyper::Server;
 use std::net::SocketAddr;
 
