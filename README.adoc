@@ -1,0 +1,27 @@
+= Laerning Tool
+Author: Hugh Kaznowski
+Date: 2023/07/15
+
+== Introduction
+
+Laerning Tool is an API that provides access to learning environments.
+This is useful for various scenarios
+
+Obvious scholarly uses:
+- learning languages
+- learning topics (such as electro dynamics)
+- learning maps
+- learning geo-policital statistics
+- learning historic events
+
+Non-obvious uses:
+- learning rules to a complex game
+- learning a style of writing
+- fun quizes
+- reinforcing process or excercises ("how to build and deploy this project", "how to remember the flow of thought for a presentation")
+- reinforcing the key points from books you read
+
+There are many more.
+Any time you would have said "ah, I should put some effort into getting better at this!", this should be the answer.
+And the datasets should be available online so others can use the data created!
+
