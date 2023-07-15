@@ -3,12 +3,12 @@ mod xml;
 
 use crate::xml::LearningModule;
 
-use hyper::client::connect::Connect;
+
 use hyper::Server;
 use std::net::SocketAddr;
 use surrealdb::engine::local::{Db, Mem};
-use surrealdb::opt::auth::Root;
-use surrealdb::{Connection, Surreal};
+
+use surrealdb::{Surreal};
 
 async fn load_data() -> Vec<LearningModule> {
     let modules = xml::list_modules("data").unwrap();
