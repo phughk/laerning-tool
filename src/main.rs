@@ -4,11 +4,10 @@ use axum::{routing::get, Router};
 use hyper::Server;
 use std::net::SocketAddr;
 
-
 #[tokio::main]
 async fn main() {
     // Create a new Axum router
-    let app = api::build_router();
+    let app = api::build_router().await;
 
     // Define the address on which the server will listen
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
