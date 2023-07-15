@@ -1,9 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use crate::module_browser::{
-        Answer, Category, EntryTag, LearningModuleEntries, LearningModuleEntry,
-        LearningModuleEntryType, Question,
-    };
     use crate::xml::{
         Answer, Category, EntryTag, LearningModuleEntries, LearningModuleEntry,
         LearningModuleEntryType, Question,
