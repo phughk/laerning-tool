@@ -1,11 +1,12 @@
-use crate::api::{build_router, make_server};
+use crate::api;
 use axum::http::{Request, StatusCode};
 use axum_test::TestServer;
 use hyper::Body;
 
 #[tokio::test]
 async fn test_games_can_be_created() {
-    let app = make_server().await;
+    let api = api::new(vec![]);
+    let app = api.make_server().await;
 
     let server = TestServer::new(app).unwrap();
 
@@ -18,6 +19,6 @@ async fn test_games_can_be_created() {
 
     assert_eq!(
         body_str,
-        r#"{"name":"new game name","dataset":"new game dataset"}"#
+        r#"{"name":"new game name 0","dataset":"new game dataset 0"}"#
     );
 }
