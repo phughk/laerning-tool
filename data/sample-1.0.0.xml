@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<learning-module>
+    <metadata>
+        <name>Sample Dataset</name>
+        <author>Hugh Kaznowski</author>
+        <description>Demo of capability</description>
+        <updated>2022.12.02 22:07</updated>
+        <file-version>1.0.0</file-version>
+        <format-version>1.0.0</format-version>
+    </metadata>
+    <entries>
+        <entry type="single-choice" id="five_larger_than_three">
+            <question>Is 5 larger than 3?</question>
+            <answer correct="true" id="yes">Yes</answer>
+            <answer correct="false" id="no">No</answer>
+        </entry>
+        <entry type="multiple-choice" id="primary_colours" sampleable="true">
+            <question>Which of the following are primary colours</question>
+            <answer correct="true" id="red">Red</answer>
+            <answer correct="true" id="yellow">Yellow</answer>
+            <answer correct="true" id="blue">Blue</answer>
+            <answer correct="false" id="green">Green</answer>
+            <answer correct="false" id="m">Magenta</answer>
+        </entry>
+        <entry type="category" id="verb_noun_adjective" sampleable="true">
+            <category id="verb">Verb</category>
+            <category id="noun">Noun</category>
+            <category id="adjective">Adjective</category>
+            <answer category="verb" id="v_laugh">Laughing</answer> <!-- This could hypothetically be (to) "Happy", conflicting with adjective. Then both categories are valid-->
+            <answer category="noun" id="n_happ">Happiness</answer>
+            <answer category="adjective" id="a_happ">Happy</answer>
+        </entry>
+    </entries>
+</learning-module>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<learning-module>
+    <metadata>
+        <name>Millionaire</name>
+        <description>Demonstrate a simple quiz. It is deliberately small, because I needed a different dataset to the sample.</description>
+        <author>Hugh Kaznowski</author>
+        <updated>2022.12.05 22:07</updated>
+        <file-version>1.0.0</file-version>
+        <format-version>1.0.0</format-version>
+    </metadata>
+    <entries>
+        <entry type="single-choice" id="six_pack">
+            <question>A person with well-developed abdominal muscles is said to have a what?</question>
+            <answer correct="false" id="one">One-pack</answer>
+            <answer correct="false" id="twelve">Twelve-pack</answer>
+            <answer correct="true" id="six">Six-pack</answer>
+            <answer correct="false" id="family">Family-pack</answer>
+        </entry>
+        <entry type="single-choice" id="film_end">
+            <question>Which two words traditionally appear onscreen at the termination of a feature film?</question>
+            <answer correct="true" id="end">The End</answer>
+            <answer correct="false" id="finish">The Finish</answer>
+            <answer correct="false" id="conclusion">The Conclusion</answer>
+            <answer correct="false" id="pizza">The Pizza Rolls Are Done</answer>
+        </entry>
+    </entries>
+</learning-module>
