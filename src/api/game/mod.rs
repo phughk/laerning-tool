@@ -5,9 +5,11 @@ use crate::api::ApiState;
 
 use axum::{routing::get, Extension, Json, Router};
 use std::sync::Arc;
+use surrealdb::engine::local::Db;
 
 pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
     let size = state.clone().modules.len();
+    let db_data = state.clone().db.query("SELECT sodifn");
     Json(Game {
         name: format!("new game name {size}").to_string(),
         dataset: format!("new game dataset {size}").to_string(),

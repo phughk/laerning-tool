@@ -3,17 +3,35 @@ mod xml;
 
 use crate::xml::LearningModule;
 
+use hyper::client::connect::Connect;
 use hyper::Server;
 use std::net::SocketAddr;
+use surrealdb::engine::local::{Db, Mem};
+use surrealdb::opt::auth::Root;
+use surrealdb::{Connection, Surreal};
 
 async fn load_data() -> Vec<LearningModule> {
     let modules = xml::list_modules("data").unwrap();
     modules
 }
 
-async fn start_server(data: Vec<LearningModule>) {
+async fn start_db() -> Surreal<Db> {
+    let db: Surreal<Db> = Surreal::new::<Mem>(()).await.unwrap();
+
+    // Auth not supported in memory
+    /*
+    db.signin(Root {
+        username: "root",
+        password: "root",
+    }).await.unwrap();
+    */
+
+    db
+}
+
+async fn start_server(db: Surreal<Db>, data: Vec<LearningModule>) {
     // Create a new Axum router
-    let api_state = api::new(data);
+    let api_state = api::new(db, data);
     let app = api_state.make_server().await;
 
     // Define the address on which the server will listen
@@ -27,5 +45,6 @@ async fn start_server(data: Vec<LearningModule>) {
 #[tokio::main]
 async fn main() {
     let data = load_data().await;
-    start_server(data).await;
+    let db = start_db().await;
+    start_server(db, data).await;
 }

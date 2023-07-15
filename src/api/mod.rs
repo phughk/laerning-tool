@@ -5,9 +5,12 @@ use crate::xml::LearningModule;
 use axum::routing::IntoMakeService;
 use axum::{routing::get, Router};
 use std::sync::Arc;
+use surrealdb::engine::local::{Db, Mem};
+use surrealdb::Surreal;
 
 /// ApiState is all the information required to use the application
 pub struct ApiState {
+    pub(crate) db: Surreal<Db>,
     pub(crate) modules: Vec<LearningModule>,
 }
 
@@ -18,9 +21,9 @@ pub struct ApiInstance {
 }
 
 /// Create new ApiInstance that tracks and owns state
-pub fn new(modules: Vec<LearningModule>) -> ApiInstance {
+pub fn new(db: Surreal<Db>, modules: Vec<LearningModule>) -> ApiInstance {
     return ApiInstance {
-        state: Arc::new(ApiState { modules }),
+        state: Arc::new(ApiState { db, modules }),
     };
 }
 
