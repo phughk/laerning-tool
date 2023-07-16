@@ -4,14 +4,30 @@ use crate::api::game::game::Game;
 use crate::api::ApiState;
 
 use axum::{routing::get, Extension, Json, Router};
+use serde::Deserialize;
 use std::sync::Arc;
+use surrealdb::sql::Thing;
 
+#[derive(Debug, Deserialize)]
+struct UserType {
+    id: Thing,
+    name: String,
+}
 
 pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
     let size = state.clone().modules.len();
-    let _db_data = state.clone().db.query("SELECT sodifn");
+    let data: Option<UserType> = state
+        .clone()
+        .db
+        .query(r#"INSERT INTO user {"name": "Hugh"}"#)
+        .await
+        .unwrap()
+        .take(0)
+        .unwrap();
+    println!("The data is {data:?}");
+
     Json(Game {
-        name: format!("new game name {size}").to_string(),
+        name: format!("new game name {size} {data:?}").to_string(),
         dataset: format!("new game dataset {size}").to_string(),
     })
 }

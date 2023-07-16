@@ -3,12 +3,11 @@ mod xml;
 
 use crate::xml::LearningModule;
 
-
 use hyper::Server;
 use std::net::SocketAddr;
 use surrealdb::engine::local::{Db, Mem};
 
-use surrealdb::{Surreal};
+use surrealdb::Surreal;
 
 async fn load_data() -> Vec<LearningModule> {
     let modules = xml::list_modules("data").unwrap();
@@ -25,6 +24,10 @@ async fn start_db() -> Surreal<Db> {
         password: "root",
     }).await.unwrap();
     */
+    db.use_ns("learning-tool-ns")
+        .use_db("main-app")
+        .await
+        .unwrap();
 
     db
 }
