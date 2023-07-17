@@ -5,6 +5,8 @@ use std::collections::HashMap;
 
 use surrealdb::sql::{Strand, Thing, Value};
 
+/// A Game is a session that is constructed from a single dataset.
+/// It is currently tied to a single user, but down the line may be tied with several.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Game {
     pub id: Option<Thing>,
