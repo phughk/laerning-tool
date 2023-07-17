@@ -1,10 +1,10 @@
-use crate::repository::RepositoryError::{CreateGameFailed, ListGameFailed, NoResults};
-use serde::{Deserialize, Serialize};
-use std::any::Any;
+use crate::repository::RepositoryError::CreateGameFailed;
+use serde::Deserialize;
+
 use std::collections::HashMap;
 use surrealdb::engine::local::Db;
 use surrealdb::sql::Thing;
-use surrealdb::{Error, Surreal};
+use surrealdb::{Surreal};
 
 pub struct LaerningToolRepository {
     db: Surreal<Db>,
@@ -22,8 +22,6 @@ pub struct Game {
 
 #[derive(Debug)]
 pub enum RepositoryError {
-    ListGameFailed { cause: Error },
-    NoResults,
     CreateGameFailed,
 }
 
@@ -52,7 +50,5 @@ impl LaerningToolRepository {
             .take(0)
             .unwrap();
         Ok(data)
-        // data.and_then(|opt| -> Vec<Game> { opt.unwrap_or(Vec::new()) })
-        // data.map_err(|sdb_error| -> RepositoryError { ListGameFailed { cause: sdb_error } })
     }
 }

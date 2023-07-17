@@ -6,8 +6,8 @@ use crate::xml::LearningModule;
 use axum::routing::IntoMakeService;
 use axum::{routing::get, Router};
 use std::sync::Arc;
-use surrealdb::engine::local::Db;
-use surrealdb::Surreal;
+
+
 
 /// ApiState is all the information required to use the application
 pub struct ApiState {

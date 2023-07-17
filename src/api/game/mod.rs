@@ -4,7 +4,7 @@ use crate::api::game::game::Game;
 use crate::api::ApiState;
 
 use axum::{routing::get, Extension, Json, Router};
-use serde::Deserialize;
+
 use std::sync::Arc;
 use surrealdb::sql::{Id, Thing};
 
