@@ -6,18 +6,15 @@ use crate::api::ApiState;
 use axum::{routing::get, Extension, Json, Router};
 
 use std::sync::Arc;
-use surrealdb::sql::{Id, Thing};
+
 
 pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
     let state = state.0.clone();
     let size = state.modules.len();
     let created_game = state
         .repository
-        .create_game(crate::repository::Game {
-            id: Thing {
-                tb: "".to_string(),
-                id: (Id::String("".to_string())),
-            },
+        .create_game(crate::repository::game::Game {
+            id: None,
             name: "".to_string(),
         })
         .await
