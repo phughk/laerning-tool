@@ -1,12 +1,11 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::repository::LaerningToolRepository;
 use std::collections::HashMap;
 
 use surrealdb::sql::{Strand, Thing, Value};
 
-
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Game {
     pub id: Option<Thing>,
     pub name: String,
