@@ -1,4 +1,5 @@
 mod api;
+mod repository;
 mod xml;
 
 use crate::xml::LearningModule;
@@ -7,6 +8,7 @@ use hyper::Server;
 use std::net::SocketAddr;
 use surrealdb::engine::local::{Db, Mem};
 
+use crate::repository::LaerningToolRepository;
 use surrealdb::Surreal;
 
 async fn load_data() -> Vec<LearningModule> {
@@ -32,9 +34,9 @@ async fn start_db() -> Surreal<Db> {
     db
 }
 
-async fn start_server(db: Surreal<Db>, data: Vec<LearningModule>) {
+async fn start_server(repository: LaerningToolRepository, data: Vec<LearningModule>) {
     // Create a new Axum router
-    let api_state = api::new(db, data);
+    let api_state = api::new(repository, data);
     let app = api_state.make_server().await;
 
     // Define the address on which the server will listen
@@ -49,5 +51,6 @@ async fn start_server(db: Surreal<Db>, data: Vec<LearningModule>) {
 async fn main() {
     let data = load_data().await;
     let db = start_db().await;
-    start_server(db, data).await;
+    let repository = repository::new(db);
+    start_server(repository, data).await;
 }

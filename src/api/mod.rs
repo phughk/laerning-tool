@@ -1,16 +1,17 @@
 mod game;
 mod test;
 
+use crate::repository::LaerningToolRepository;
 use crate::xml::LearningModule;
 use axum::routing::IntoMakeService;
 use axum::{routing::get, Router};
 use std::sync::Arc;
-use surrealdb::engine::local::{Db};
+use surrealdb::engine::local::Db;
 use surrealdb::Surreal;
 
 /// ApiState is all the information required to use the application
 pub struct ApiState {
-    pub(crate) db: Surreal<Db>,
+    pub(crate) repository: LaerningToolRepository,
     pub(crate) modules: Vec<LearningModule>,
 }
 
@@ -21,9 +22,12 @@ pub struct ApiInstance {
 }
 
 /// Create new ApiInstance that tracks and owns state
-pub fn new(db: Surreal<Db>, modules: Vec<LearningModule>) -> ApiInstance {
+pub fn new(repository: LaerningToolRepository, modules: Vec<LearningModule>) -> ApiInstance {
     return ApiInstance {
-        state: Arc::new(ApiState { db, modules }),
+        state: Arc::new(ApiState {
+            repository,
+            modules,
+        }),
     };
 }
 

@@ -6,37 +6,39 @@ use crate::api::ApiState;
 use axum::{routing::get, Extension, Json, Router};
 use serde::Deserialize;
 use std::sync::Arc;
-use surrealdb::sql::Thing;
-
-#[derive(Debug, Deserialize)]
-struct UserType {
-    id: Thing,
-    name: String,
-}
+use surrealdb::sql::{Id, Thing};
 
 pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
-    let size = state.clone().modules.len();
-    let data: Option<UserType> = state
-        .clone()
-        .db
-        .query(r#"INSERT INTO user {"name": "Hugh"}"#)
+    let state = state.0.clone();
+    let size = state.modules.len();
+    let created_game = state
+        .repository
+        .create_game(crate::repository::Game {
+            id: Thing {
+                tb: "".to_string(),
+                id: (Id::String("".to_string())),
+            },
+            name: "".to_string(),
+        })
         .await
-        .unwrap()
-        .take(0)
         .unwrap();
-    println!("The data is {data:?}");
+    println!("The data is {:?}", created_game);
 
     Json(Game {
-        name: format!("new game name {size} {data:?}").to_string(),
+        name: format!("new game name {size} {created_game:?}").to_string(),
         dataset: format!("new game dataset {size}").to_string(),
     })
 }
 
 async fn game_list(state: Extension<Arc<ApiState>>) -> Json<Game> {
-    let size = state.clone().modules.len();
+    let state = state.0.clone();
+    let size = state.modules.len();
+    let games = state.clone().repository.list_games().await.unwrap();
+    println!("The list is {:?}", games);
+
     Json(Game {
         name: format!("list game name {size}").to_string(),
-        dataset: format!("list game dataset {size}").to_string(),
+        dataset: format!("list game dataset {games:?}").to_string(),
     })
 }
 
