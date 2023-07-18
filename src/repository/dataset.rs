@@ -3,9 +3,10 @@ use crate::repository::LaerningToolRepository;
 use axum::handler::Handler;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
+use surrealdb::kvs::Val;
 use surrealdb::sql;
 use surrealdb::sql::Value::Thing;
-use surrealdb::sql::{Number, Object, Strand, Value};
+use surrealdb::sql::{Array, Number, Object, Strand, Value};
 
 /// A dataset represents a collection of information (and questions) that can be used to generate
 /// a Game.
@@ -18,8 +19,30 @@ pub struct Dataset {
     id: Option<sql::Thing>,
 
     // Below is part of the XML
-    metadata: Object,
+    metadata: DatasetMetadata,
     entries: Vec<DatasetEntry>,
+}
+
+impl Into<Object> for Dataset {
+    fn into(self) -> Object {
+        let mut map: BTreeMap<String, Value> = BTreeMap::new();
+        map.insert(
+            "id".to_string(),
+            self.id.map_or(Value::None, |thing| Value::Thing(thing)),
+        );
+        map.insert("metadata".to_string(), Value::Object(self.metadata.into()));
+        map.insert(
+            "entries".to_string(),
+            Value::Array(Array::from(
+                self.entries
+                    .into_iter()
+                    .map(|dataset_entry| dataset_entry.into())
+                    .map(|object| Value::Object(object))
+                    .collect::<Vec<Value>>(),
+            )),
+        );
+        Object::from(map)
+    }
 }
 
 /// This describes the metadata of the file
@@ -34,6 +57,22 @@ pub struct DatasetMetadata {
     pub format_version: Strand,
 }
 
+impl Into<Object> for DatasetMetadata {
+    fn into(self) -> Object {
+        let mut map: BTreeMap<String, Value> = BTreeMap::new();
+        map.insert("name".to_string(), Value::Strand(self.name));
+        map.insert("description".to_string(), Value::Strand(self.description));
+        map.insert("author".to_string(), Value::Strand(self.author));
+        map.insert("updated".to_string(), Value::Strand(self.updated));
+        map.insert("file_version".to_string(), Value::Strand(self.file_version));
+        map.insert(
+            "format_version".to_string(),
+            Value::Strand(self.format_version),
+        );
+        Object::from(map)
+    }
+}
+
 /// This is basically a question in the dataset, but "question" is quite overloaded
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DatasetEntry {
@@ -44,6 +83,25 @@ pub struct DatasetEntry {
     pub entry_tags: Vec<DatasetEntryTag>,
 }
 
+impl Into<Object> for DatasetEntry {
+    fn into(self) -> Object {
+        let mut map: BTreeMap<String, Value> = BTreeMap::new();
+        map.insert("entry_type".to_string(), self.entry_type.into());
+        map.insert("id".to_string(), Value::Strand(self.id));
+        map.insert("sampleable".to_string(), Value::Number(self.sampleable));
+        map.insert(
+            "entry_tags".to_string(),
+            Value::Array(Array::from(
+                self.entry_tags
+                    .into_iter()
+                    .map(|entry_tag| entry_tag.into())
+                    .collect::<Vec<Value>>(),
+            )),
+        );
+        Object::from(map)
+    }
+}
+
 /// This dictates the type of question and required fields in the DatasetEntry
 #[derive(Serialize, Deserialize, Debug)]
 pub enum DatasetEntryType {
@@ -51,6 +109,17 @@ pub enum DatasetEntryType {
     SingleChoice,
     MultipleChoice,
     Category,
+}
+
+impl Into<Value> for DatasetEntryType {
+    fn into(self) -> Value {
+        match self {
+            DatasetEntryType::None => Value::Number(Number::Int(0)),
+            DatasetEntryType::SingleChoice => Value::Number(Number::Int(1)),
+            DatasetEntryType::MultipleChoice => Value::Number(Number::Int(2)),
+            DatasetEntryType::Category => Value::Number(Number::Int(3)),
+        }
+    }
 }
 
 /// Because a question entry can be formed in multiple ways, this is a collection of various
@@ -64,14 +133,13 @@ pub enum DatasetEntryTag {
     Category,
 }
 
-impl Into<Object> for Dataset {
-    fn into(self) -> Object {
-        let mut map: BTreeMap<String, Value> = BTreeMap::new();
-        map.insert(
-            "id".to_string(),
-            self.id.map_or(Value::None, |thing| Value::Thing(thing)),
-        );
-        Object::from(map)
+impl Into<Value> for DatasetEntryTag {
+    fn into(self) -> Value {
+        match self {
+            DatasetEntryTag::Question => Value::Number(Number::Int(0)),
+            DatasetEntryTag::Answer => Value::Number(Number::Int(1)),
+            DatasetEntryTag::Category => Value::Number(Number::Int(2)),
+        }
     }
 }
 
