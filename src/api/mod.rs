@@ -1,3 +1,4 @@
+mod dataset;
 mod game;
 mod test;
 
@@ -7,12 +8,9 @@ use axum::routing::IntoMakeService;
 use axum::{routing::get, Router};
 use std::sync::Arc;
 
-
-
 /// ApiState is all the information required to use the application
 pub struct ApiState {
     pub(crate) repository: LaerningToolRepository,
-    pub(crate) modules: Vec<LearningModule>,
 }
 
 /// ApiInstance is a way of storing all the state of the application
@@ -22,12 +20,9 @@ pub struct ApiInstance {
 }
 
 /// Create new ApiInstance that tracks and owns state
-pub fn new(repository: LaerningToolRepository, modules: Vec<LearningModule>) -> ApiInstance {
+pub fn new(repository: LaerningToolRepository) -> ApiInstance {
     return ApiInstance {
-        state: Arc::new(ApiState {
-            repository,
-            modules,
-        }),
+        state: Arc::new(ApiState { repository }),
     };
 }
 
@@ -39,6 +34,7 @@ impl ApiInstance {
     pub async fn build_router(self) -> Router {
         let router = Router::new().route("/", get(ApiInstance::hello_world));
         let router = game::add_game_route(self.state.clone(), router).await;
+        let router = dataset::add_dataset_route(self.state.clone(), router).await;
         router
     }
 

@@ -1,4 +1,4 @@
-mod dataset;
+pub(crate) mod dataset;
 pub(crate) mod game;
 
 use surrealdb::engine::local::Db;

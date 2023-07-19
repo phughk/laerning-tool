@@ -8,6 +8,7 @@ use hyper::Server;
 use std::net::SocketAddr;
 use surrealdb::engine::local::{Db, Mem};
 
+use crate::repository::dataset::Dataset;
 use crate::repository::LaerningToolRepository;
 use surrealdb::Surreal;
 
@@ -34,9 +35,9 @@ async fn start_db() -> Surreal<Db> {
     db
 }
 
-async fn start_server(repository: LaerningToolRepository, data: Vec<LearningModule>) {
+async fn start_server(repository: LaerningToolRepository) {
     // Create a new Axum router
-    let api_state = api::new(repository, data);
+    let api_state = api::new(repository);
     let app = api_state.make_server().await;
 
     // Define the address on which the server will listen
@@ -52,5 +53,13 @@ async fn main() {
     let data = load_data().await;
     let db = start_db().await;
     let repository = repository::new(db);
-    start_server(repository, data).await;
+    repository
+        .batch_create_datasets(
+            data.into_iter()
+                .map(|module| Dataset::from(module))
+                .collect::<Vec<Dataset>>(),
+        )
+        .await
+        .unwrap();
+    start_server(repository).await;
 }

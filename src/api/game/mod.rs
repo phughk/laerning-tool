@@ -7,10 +7,8 @@ use axum::{routing::get, Extension, Json, Router};
 
 use std::sync::Arc;
 
-
 pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
     let state = state.0.clone();
-    let size = state.modules.len();
     let created_game = state
         .repository
         .create_game(crate::repository::game::Game {
@@ -22,15 +20,15 @@ pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
     println!("The data is {:?}", created_game);
 
     Json(Game {
-        name: format!("new game name {size} {created_game:?}").to_string(),
-        dataset: format!("new game dataset {size}").to_string(),
+        name: format!("new game name {created_game:?}").to_string(),
+        dataset: format!("new game dataset").to_string(),
     })
 }
 
 async fn game_list(state: Extension<Arc<ApiState>>) -> Json<Game> {
     let state = state.0.clone();
-    let size = state.modules.len();
     let games = state.clone().repository.list_games().await.unwrap();
+    let size = games.len();
     println!("The list is {:?}", games);
 
     Json(Game {

@@ -1,5 +1,6 @@
 use crate::repository::dataset::DatasetError::CreateDatasetFailed;
 use crate::repository::LaerningToolRepository;
+use crate::xml::LearningModule;
 use axum::handler::Handler;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
@@ -16,11 +17,11 @@ use surrealdb::sql::{Array, Number, Object, Strand, Value};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Dataset {
     // This is not part of the XML
-    id: Option<sql::Thing>,
+    pub id: Option<sql::Thing>,
 
     // Below is part of the XML
-    metadata: DatasetMetadata,
-    entries: Vec<DatasetEntry>,
+    pub metadata: DatasetMetadata,
+    pub entries: Vec<DatasetEntry>,
 }
 
 impl Into<Object> for Dataset {
@@ -42,6 +43,23 @@ impl Into<Object> for Dataset {
             )),
         );
         Object::from(map)
+    }
+}
+
+impl From<LearningModule> for Dataset {
+    fn from(value: LearningModule) -> Self {
+        Dataset {
+            id: None,
+            metadata: DatasetMetadata {
+                name: Strand(value.metadata.name),
+                description: Strand(value.metadata.description),
+                author: Strand(value.metadata.author),
+                updated: Default::default(),
+                file_version: Default::default(),
+                format_version: Default::default(),
+            },
+            entries: vec![],
+        }
     }
 }
 
@@ -161,5 +179,21 @@ impl LaerningToolRepository {
             .take(0)
             .unwrap();
         created.ok_or(CreateDatasetFailed)
+    }
+
+    pub async fn batch_create_datasets(&self, datasets: Vec<Dataset>) -> Result<(), DatasetError> {
+        for dataset in datasets {
+            self.create_dataset(dataset).await?;
+        }
+        Ok(())
+    }
+
+    pub async fn list_datasets(&self) -> Vec<Dataset> {
+        self.db
+            .query("SELECT * FROM  dataset")
+            .await
+            .unwrap()
+            .take(0)
+            .unwrap()
     }
 }
