@@ -1,12 +1,12 @@
 use crate::repository::dataset::DatasetError::CreateDatasetFailed;
 use crate::repository::LaerningToolRepository;
 use crate::xml::LearningModule;
-use axum::handler::Handler;
+
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
-use surrealdb::kvs::Val;
+
 use surrealdb::sql;
-use surrealdb::sql::Value::Thing;
+
 use surrealdb::sql::{Array, Number, Object, Strand, Value};
 
 /// A dataset represents a collection of information (and questions) that can be used to generate
