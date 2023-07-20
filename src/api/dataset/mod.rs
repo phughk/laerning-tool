@@ -5,6 +5,7 @@ use std::sync::Arc;
 
 #[derive(Serialize)]
 pub struct Dataset {
+    pub id: String,
     pub name: String,
 }
 
@@ -16,6 +17,7 @@ pub async fn dataset_list(state: Extension<Arc<ApiState>>) -> Json<Vec<Dataset>>
             .await
             .into_iter()
             .map(|dataset| Dataset {
+                id: dataset.id.unwrap().id.to_string(),
                 name: dataset.metadata.name.to_string(),
             })
             .collect(),
