@@ -7,7 +7,8 @@ Date: 2023/07/15
 Laerning Tool is an API that provides access to learning environments.
 This is useful for various scenarios
 
-Obvious scholarly uses:
+Obvious (scholarly) uses:
+
 - learning languages
 - learning topics (such as electro dynamics)
 - learning maps
@@ -15,13 +16,14 @@ Obvious scholarly uses:
 - learning historic events
 
 Non-obvious uses:
+
 - learning rules to a complex game
 - learning a style of writing
-- fun quizes
-- reinforcing process or excercises ("how to build and deploy this project", "how to remember the flow of thought for a presentation")
+- fun quizzes (trivia, jackbox-esque, made up stuff)
+- reinforcing process or exercises ("how to build and deploy this project", "how to remember the flow of thought for a presentation")
 - reinforcing the key points from books you read
 
 There are many more.
-Any time you would have said "ah, I should put some effort into getting better at this!", this should be the answer.
-And the datasets should be available online so others can use the data created!
+Any time you would have said "ah, I should put some effort into getting better at this!", this software should be the answer.
+The datasets should be available online so others can use the data created!
 
