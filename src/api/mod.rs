@@ -9,6 +9,7 @@ use crate::api::game::game::Game;
 use crate::api::game::game::GameListing;
 use crate::api::game::game::GameStats;
 use crate::api::game::game::GameStatus;
+use crate::api::game::game::NewGameRequest;
 use crate::api::game::game::QuestionEntry;
 
 use axum::routing::{post, IntoMakeService};
@@ -47,12 +48,13 @@ paths(
 components(
     schemas(
         dataset::Dataset,
+        AnswerType,
         Game,
         GameListing,
-        GameStatus,
         GameStats,
+        GameStatus,
+        NewGameRequest,
         QuestionEntry,
-        AnswerType,
     )
 ),
 tags(
@@ -66,15 +68,15 @@ impl ApiInstance {
             .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
             .route(
                 "/dataset/list",
-                get(dataset::dataset_list).layer(Extension(self.state.clone())),
+                get(dataset::dataset_list).with_state(self.state.clone()),
             )
             .route(
                 "/game/new",
-                post(game::game_new).layer(Extension(self.state.clone())),
+                post(game::game_new).with_state(self.state.clone()),
             )
             .route(
                 "/game/list",
-                get(game::game_list).layer(Extension(self.state.clone())),
+                get(game::game_list).with_state(self.state.clone()),
             )
     }
 

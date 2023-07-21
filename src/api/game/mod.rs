@@ -1,30 +1,38 @@
 pub(crate) mod game;
 
-use crate::api::game::game::{Game, GameListing, GameStats, GameStatus};
+use crate::api::game::game::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
 use crate::api::ApiState;
 
 use axum::{Extension, Json};
 
+use axum::extract::State;
+use axum::http::Request;
 use std::sync::Arc;
+use surrealdb::sql::Thing;
 
 #[utoipa::path(
     post,
     path = "/game/new",
+    request_body=NewGameRequest,
     responses(
         (status = 201, description = "Game created successfully", body = Game),
     )
 )]
-pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
-    let state = state.0.clone();
+pub async fn game_new(
+    State(state): State<Arc<ApiState>>,
+    Json(request): Json<NewGameRequest>,
+) -> Json<Game> {
+    let state = state.clone();
     let created_game = state
         .repository
         .create_game(crate::repository::game::Game {
-            id: None,
-            name: "".to_string(),
+            id: request
+                .name
+                .map(|id_str| Thing::from(("game".to_string(), id_str))),
+            name: request.dataset.clone(),
         })
         .await
         .unwrap();
-    println!("The data is {:?}", created_game);
 
     Json(Game {
         name: format!("new game name {created_game:?}").to_string(),
@@ -48,8 +56,8 @@ pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
         (status = 200, description = "Games successfully listed", body = [GameListing]),
     )
 )]
-pub async fn game_list(state: Extension<Arc<ApiState>>) -> Json<Vec<GameListing>> {
-    let state = state.0.clone();
+pub async fn game_list(State(state): State<Arc<ApiState>>) -> Json<Vec<GameListing>> {
+    let state = state.clone();
     let games = state.clone().repository.list_games().await.unwrap();
     let _size = games.len();
     println!("The list is {:?}", games);
