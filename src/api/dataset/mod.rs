@@ -3,8 +3,7 @@ use axum::{Extension, Json};
 use serde::Serialize;
 use std::sync::Arc;
 
-use utoipa::{ToSchema};
-
+use utoipa::ToSchema;
 
 #[derive(Serialize, ToSchema)]
 pub struct Dataset {
@@ -16,7 +15,7 @@ pub struct Dataset {
     get,
     path = "/dataset/list",
     responses(
-        (status = 201, description = "Todo item created successfully", body = Vec<Dataset>),
+        (status = 200, description = "Successfully listed the datasets", body = Vec<Dataset>),
     )
 )]
 pub async fn dataset_list(state: Extension<Arc<ApiState>>) -> Json<Vec<Dataset>> {

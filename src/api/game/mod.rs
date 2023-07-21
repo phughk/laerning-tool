@@ -7,14 +7,11 @@ use axum::{Extension, Json};
 
 use std::sync::Arc;
 
-
-
 #[utoipa::path(
-    get,
+    post,
     path = "/game/new",
     responses(
-        (status = 201, description = "Todo item created successfully", body = Todo),
-        (status = 409, description = "Todo already exists", body = TodoError)
+        (status = 201, description = "Game created successfully", body = Game),
     )
 )]
 pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {

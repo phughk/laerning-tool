@@ -5,12 +5,10 @@ mod test;
 use crate::repository::LaerningToolRepository;
 
 use crate::api::game::game::Game;
-use axum::routing::IntoMakeService;
+use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Extension, Router};
 use std::sync::Arc;
-use utoipa::{
-    Modify, OpenApi,
-};
+use utoipa::{Modify, OpenApi};
 use utoipa_swagger_ui::SwaggerUi;
 
 /// ApiState is all the information required to use the application
@@ -47,8 +45,7 @@ components(
     )
 ),
 tags(
-(name = "this is a tag name", description = "This is the tag description")
-)
+    (name = "this is a tag name", description = "This is the tag description"))
 )]
 pub struct ApiDoc;
 
@@ -62,7 +59,7 @@ impl ApiInstance {
             )
             .route(
                 "/game/new",
-                get(game::game_new).layer(Extension(self.state.clone())),
+                post(game::game_new).layer(Extension(self.state.clone())),
             )
             .route(
                 "/game/list",

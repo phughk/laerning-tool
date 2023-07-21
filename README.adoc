@@ -31,7 +31,14 @@ The datasets should be available online so others can use the data created!
 
 There is an OpenAPI specification and associated SwaggerUI interface to get to grips with the engine easier.
 
-You can access it via the normal http://localhost:3000/swagger-ui/#/[/swagger-ui] path.
+You can access an interactive API via the normal http://localhost:3000/swagger-ui/#/[/swagger-ui] path.
 
-The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path.
+The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path, if you are generating clients for this engine.
+
+
+== Diagrams
+
+There are some helpful diagrams in the repository.
+They have the extension `.graphml` and can be opened with yEd chart editor.
+
 
