@@ -3,14 +3,11 @@ pub(crate) mod game;
 use crate::api::game::game::Game;
 use crate::api::ApiState;
 
-use axum::{routing::get, Extension, Json, Router};
+use axum::{Extension, Json};
 
 use std::sync::Arc;
-use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
-    Modify, OpenApi,
-};
-use utoipa_swagger_ui::SwaggerUi;
+
+
 
 #[utoipa::path(
     get,

@@ -9,7 +9,6 @@ use axum::routing::IntoMakeService;
 use axum::{routing::get, Extension, Router};
 use std::sync::Arc;
 use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
     Modify, OpenApi,
 };
 use utoipa_swagger_ui::SwaggerUi;

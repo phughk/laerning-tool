@@ -1,13 +1,10 @@
 use crate::api::ApiState;
-use axum::{routing::get, Extension, Json, Router};
+use axum::{Extension, Json};
 use serde::Serialize;
 use std::sync::Arc;
-use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
-    Modify, OpenApi,
-};
-use utoipa::{IntoParams, ToSchema};
-use utoipa_swagger_ui::SwaggerUi;
+
+use utoipa::{ToSchema};
+
 
 #[derive(Serialize, ToSchema)]
 pub struct Dataset {

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use utoipa::{IntoParams, ToSchema};
+use utoipa::{ToSchema};
 
 #[derive(Deserialize, Serialize, ToSchema)]
 pub struct Game {
