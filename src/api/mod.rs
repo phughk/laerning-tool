@@ -7,6 +7,11 @@ use crate::repository::LaerningToolRepository;
 use axum::routing::IntoMakeService;
 use axum::{routing::get, Router};
 use std::sync::Arc;
+use utoipa::{
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
+    Modify, OpenApi,
+};
+use utoipa_swagger_ui::SwaggerUi;
 
 /// ApiState is all the information required to use the application
 pub struct ApiState {
@@ -27,12 +32,10 @@ pub fn new(repository: LaerningToolRepository) -> ApiInstance {
 }
 
 impl ApiInstance {
-    async fn hello_world() -> &'static str {
-        "Hello, World!"
-    }
-
     pub async fn build_router(self) -> Router {
-        let router = Router::new().route("/", get(ApiInstance::hello_world));
+        let router = Router::new().merge(
+            SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", dataset::ApiDoc::openapi()),
+        );
         let router = game::add_game_route(self.state.clone(), router).await;
         let router = dataset::add_dataset_route(self.state.clone(), router).await;
         router
