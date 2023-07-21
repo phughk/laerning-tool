@@ -36,24 +36,3 @@ pub async fn dataset_list(state: Extension<Arc<ApiState>>) -> Json<Vec<Dataset>>
             .collect(),
     )
 }
-
-#[derive(OpenApi)]
-#[openapi(
-paths(
-crate::api::dataset::dataset_list
-),
-components(
-schemas(Dataset)
-),
-tags(
-(name = "todo", description = "Todo items management API")
-)
-)]
-pub struct ApiDoc;
-
-pub async fn add_dataset_route(state: Arc<ApiState>, router: Router) -> Router {
-    router.route(
-        "/dataset/list",
-        get(dataset_list).layer(Extension(state.clone())),
-    )
-}

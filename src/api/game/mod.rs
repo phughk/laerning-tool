@@ -1,4 +1,4 @@
-mod game;
+pub(crate) mod game;
 
 use crate::api::game::game::Game;
 use crate::api::ApiState;
@@ -46,7 +46,7 @@ pub async fn game_new(state: Extension<Arc<ApiState>>) -> Json<Game> {
         (status = 409, description = "Todo already exists", body = TodoError)
     )
 )]
-async fn game_list(state: Extension<Arc<ApiState>>) -> Json<Game> {
+pub async fn game_list(state: Extension<Arc<ApiState>>) -> Json<Game> {
     let state = state.0.clone();
     let games = state.clone().repository.list_games().await.unwrap();
     let size = games.len();
@@ -56,25 +56,4 @@ async fn game_list(state: Extension<Arc<ApiState>>) -> Json<Game> {
         name: format!("list game name {size}").to_string(),
         dataset: format!("list game dataset {games:?}").to_string(),
     })
-}
-
-#[derive(OpenApi)]
-#[openapi(
-paths(
-crate::api::game::game_new,
-crate::api::game::game_list,
-),
-components(
-schemas(Game)
-),
-tags(
-(name = "game", description = "Manage game sessions")
-)
-)]
-pub struct ApiDoc;
-
-pub async fn add_game_route(state: Arc<ApiState>, router: Router) -> Router {
-    router
-        .route("/game/new", get(game_new).layer(Extension(state.clone())))
-        .route("/game/list", get(game_list).layer(Extension(state.clone())))
 }

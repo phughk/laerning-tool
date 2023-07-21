@@ -4,8 +4,9 @@ mod test;
 
 use crate::repository::LaerningToolRepository;
 
+use crate::api::game::game::Game;
 use axum::routing::IntoMakeService;
-use axum::{routing::get, Router};
+use axum::{routing::get, Extension, Router};
 use std::sync::Arc;
 use utoipa::{
     openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
@@ -31,14 +32,43 @@ pub fn new(repository: LaerningToolRepository) -> ApiInstance {
     };
 }
 
+// This struct lists all the accessible API paths. For swagger.
+// Swagger is not included with path implementation, so we specify and link manually.
+#[derive(OpenApi)]
+#[openapi(
+paths(
+    dataset::dataset_list,
+    game::game_new,
+    game::game_list,
+),
+components(
+    schemas(
+        dataset::Dataset,
+        Game,
+    )
+),
+tags(
+(name = "this is a tag name", description = "This is the tag description")
+)
+)]
+pub struct ApiDoc;
+
 impl ApiInstance {
     pub async fn build_router(self) -> Router {
-        let router = Router::new().merge(
-            SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", dataset::ApiDoc::openapi()),
-        );
-        let router = game::add_game_route(self.state.clone(), router).await;
-        let router = dataset::add_dataset_route(self.state.clone(), router).await;
-        router
+        Router::new()
+            .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+            .route(
+                "/dataset/list",
+                get(dataset::dataset_list).layer(Extension(self.state.clone())),
+            )
+            .route(
+                "/game/new",
+                get(game::game_new).layer(Extension(self.state.clone())),
+            )
+            .route(
+                "/game/list",
+                get(game::game_list).layer(Extension(self.state.clone())),
+            )
     }
 
     pub async fn make_server(self) -> IntoMakeService<Router> {
