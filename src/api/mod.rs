@@ -4,7 +4,13 @@ mod test;
 
 use crate::repository::LaerningToolRepository;
 
+use crate::api::game::game::AnswerType;
 use crate::api::game::game::Game;
+use crate::api::game::game::GameListing;
+use crate::api::game::game::GameStats;
+use crate::api::game::game::GameStatus;
+use crate::api::game::game::QuestionEntry;
+
 use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Extension, Router};
 use std::sync::Arc;
@@ -42,6 +48,11 @@ components(
     schemas(
         dataset::Dataset,
         Game,
+        GameListing,
+        GameStatus,
+        GameStats,
+        QuestionEntry,
+        AnswerType,
     )
 ),
 tags(
