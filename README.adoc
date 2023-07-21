@@ -27,3 +27,11 @@ There are many more.
 Any time you would have said "ah, I should put some effort into getting better at this!", this software should be the answer.
 The datasets should be available online so others can use the data created!
 
+== OpenAPI specification
+
+There is an OpenAPI specification and associated SwaggerUI interface to get to grips with the engine easier.
+
+You can access it via the normal http://localhost:3000/swagger-ui/#/[/swagger-ui] path.
+
+The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path.
+
