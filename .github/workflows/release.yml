@@ -55,7 +55,7 @@ jobs:
           # Note that glob pattern is not supported yet.
           bin: laerning-tool
           archive: $bin-$tag-$target
-          include: data, laerning-module.xsd, README.adoc, LICENSE
+          include: data,laerning-module.xsd,README.adoc,LICENSE
           # (optional) On which platform to distribute the `.tar.gz` file.
           # [default value: unix]
           # [possible values: all, unix, windows, none]
