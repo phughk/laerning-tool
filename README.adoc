@@ -2,6 +2,8 @@
 Author: Hugh Kaznowski
 Date: 2023/07/15
 
+[.center]
+====
 image:https://github.com/phughk/laerning-tool/actions/workflows/rust.yml/badge.svg[Rust, link=https://github.com/phughk/laerning-tool/actions/workflows/rust.yml]
 image:https://img.shields.io/github/license/phughk/laerning-tool[GitHub]
 
@@ -12,6 +14,7 @@ image:https://img.shields.io/github/commit-activity/m/phughk/laerning-tool[GitHu
 image:https://img.shields.io/github/issues/phughk/laerning-tool[GitHub issues]
 image:https://img.shields.io/github/issues-pr/phughk/laerning-tool[GitHub pull requests]
 image:https://img.shields.io/github/contributors/phughk/laerning-tool[GitHub contributors]
+====
 
 == Introduction
 
