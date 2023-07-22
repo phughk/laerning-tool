@@ -1,4 +1,5 @@
 use crate::api::ApiState;
+use axum::extract::State;
 use axum::{Extension, Json};
 use serde::Serialize;
 use std::sync::Arc;
@@ -18,7 +19,7 @@ pub struct Dataset {
         (status = 200, description = "Successfully listed the datasets", body = Vec<Dataset>),
     )
 )]
-pub async fn dataset_list(state: Extension<Arc<ApiState>>) -> Json<Vec<Dataset>> {
+pub async fn dataset_list(State(state): State<Arc<ApiState>>) -> Json<Vec<Dataset>> {
     Json(
         state
             .repository

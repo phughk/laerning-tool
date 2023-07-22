@@ -10,7 +10,7 @@ use surrealdb::sql::{Strand, Thing, Value};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Game {
     pub id: Option<Thing>,
-    pub name: String,
+    pub dataset: Thing,
 }
 
 #[derive(Debug)]
@@ -20,18 +20,10 @@ pub enum GameError {
 
 impl LaerningToolRepository {
     pub async fn create_game(&self, game: Game) -> Result<Game, GameError> {
-        let mut map: HashMap<String, Value> = HashMap::new();
-        map.insert(
-            "id".to_string(),
-            game.id
-                .map(|thing| Value::Thing(thing))
-                .unwrap_or(Value::None),
-        );
-        map.insert("name".to_string(), Value::Strand(Strand::from(game.name)));
         let data: Option<Game> = self
             .db
-            .query(r#"INSERT INTO game {"id": $id, "name": $name}"#)
-            .bind(map)
+            .query(r#"INSERT INTO game $game"#)
+            .bind(("game", &game))
             .await
             .unwrap()
             .take(0)

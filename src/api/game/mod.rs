@@ -6,9 +6,30 @@ use crate::api::ApiState;
 use axum::{Extension, Json};
 
 use axum::extract::State;
-use axum::http::Request;
+use axum::http::{Request, StatusCode};
+use axum::response::ErrorResponse;
 use std::sync::Arc;
 use surrealdb::sql::Thing;
+use tracing_subscriber::fmt::format;
+
+#[derive(Debug)]
+pub enum NewGameError {
+    UnspecifiedDataset,
+    DatasetNotFound,
+}
+
+impl From<NewGameError> for ErrorResponse {
+    fn from(err: NewGameError) -> ErrorResponse {
+        match err {
+            NewGameError::UnspecifiedDataset => {
+                (StatusCode::BAD_REQUEST, Json(format!("{:?}", err))).into()
+            }
+            NewGameError::DatasetNotFound => {
+                (StatusCode::NOT_FOUND, Json(format!("{:?}", err))).into()
+            }
+        }
+    }
+}
 
 #[utoipa::path(
     post,
@@ -16,12 +37,19 @@ use surrealdb::sql::Thing;
     request_body=NewGameRequest,
     responses(
         (status = 201, description = "Game created successfully", body = Game),
+        (status = 400, description = "Bad Request", body = ErrorMessage),
+        (status = 404, description = "Dataset Not Found", body = ErrorMessage),
     )
 )]
 pub async fn game_new(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<NewGameRequest>,
-) -> Json<Game> {
+) -> Result<Json<Game>, ErrorResponse>
+// Deceitful! Fail type is NewGameError
+{
+    if request.dataset.is_empty() {
+        return Err(NewGameError::UnspecifiedDataset.into());
+    }
     let state = state.clone();
     let created_game = state
         .repository
@@ -29,12 +57,12 @@ pub async fn game_new(
             id: request
                 .name
                 .map(|id_str| Thing::from(("game".to_string(), id_str))),
-            name: request.dataset.clone(),
+            dataset: Thing::from(("game", request.dataset.as_str())),
         })
         .await
         .unwrap();
 
-    Json(Game {
+    Ok(Json(Game {
         name: format!("new game name {created_game:?}").to_string(),
         dataset: format!("new game dataset").to_string(),
         current_question: None,
@@ -46,7 +74,7 @@ pub async fn game_new(
             duration: 5,
             average_question_duration: 6.0,
         },
-    })
+    }))
 }
 
 #[utoipa::path(
@@ -66,8 +94,11 @@ pub async fn game_list(State(state): State<Arc<ApiState>>) -> Json<Vec<GameListi
         games
             .into_iter()
             .map(|game| GameListing {
-                name: game.name,
-                dataset: format!("{:?}", game.id),
+                name: game
+                    .id
+                    .map(|thing| thing.id.to_string())
+                    .unwrap_or("<no name provided>".to_string()),
+                dataset: format!("{:?}", game.dataset),
                 started: "".to_string(),
                 status: GameStatus::Pending,
             })
