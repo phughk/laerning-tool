@@ -59,10 +59,10 @@ They have the extension `.graphml` and can be opened with https://www.yworks.com
 
 == Frequently Asked Questions
 
-=== How do I run/test/build
+=== How do I run/test/build from source
 
 This is a standard cargo project.
-You can run the standard command.
+You can run the standard commands.
 
 ```
 cargo run
@@ -70,8 +70,7 @@ cargo test
 cargo build --release
 ```
 
-You can find pre-made releases in the releases tab to the right of the GitHub page.
-TODO link
+You can find pre-made releases in the https://github.com/phughk/laerning-tool/releases[releases tab] to the right of the GitHub page.
 
 === How do I run the binary on Mac
 
