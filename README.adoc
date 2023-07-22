@@ -2,6 +2,12 @@
 Author: Hugh Kaznowski
 Date: 2023/07/15
 
+image:https://github.com/phughk/laerning-tool/actions/workflows/rust.yml/badge.svg[Rust, link=https://github.com/phughk/laerning-tool/actions/workflows/rust.yml]
+image:https://img.shields.io/github/commit-activity/y/phughk/laerning-tool[GitHub commit activity (branch)]
+image:https://img.shields.io/github/commit-activity/m/phughk/laerning-tool[GitHub commit activity (branch)]
+image:https://img.shields.io/github/license/phughk/laerning-tool[GitHub]
+
+
 == Introduction
 
 Laerning Tool is an API that provides access to learning environments.
