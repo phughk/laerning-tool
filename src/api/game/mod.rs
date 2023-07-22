@@ -18,6 +18,7 @@ use utoipa::ToSchema;
 pub enum NewGameError {
     UnspecifiedDataset,
     DatasetNotFound,
+    InternalError { cause: String },
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -34,6 +35,11 @@ impl From<NewGameError> for ErrorResponse {
             NewGameError::DatasetNotFound => {
                 (StatusCode::NOT_FOUND, Json(ErrorMessage { cause: err })).into()
             }
+            NewGameError::InternalError { .. } => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(ErrorMessage { cause: err }),
+            )
+                .into(),
         }
     }
 }
@@ -70,8 +76,12 @@ pub async fn game_new(
         .unwrap();
 
     Ok(Json(Game {
-        name: format!("new game name {created_game:?}").to_string(),
-        dataset: format!("new game dataset").to_string(),
+        name: created_game.id.map(|thing| thing.id.to_string()).ok_or(
+            NewGameError::InternalError {
+                cause: "Missing ID after creation".to_string(),
+            },
+        )?,
+        dataset: created_game.dataset.id.to_string(),
         current_question: None,
         stats: GameStats {
             current_question: 1,
