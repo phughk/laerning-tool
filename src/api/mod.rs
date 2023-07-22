@@ -11,6 +11,8 @@ use crate::api::game::game::GameStats;
 use crate::api::game::game::GameStatus;
 use crate::api::game::game::NewGameRequest;
 use crate::api::game::game::QuestionEntry;
+use crate::api::game::ErrorMessage;
+use crate::api::game::NewGameError;
 
 use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Extension, Router};
@@ -55,6 +57,8 @@ components(
         GameStatus,
         NewGameRequest,
         QuestionEntry,
+        ErrorMessage,
+        NewGameError,
     )
 ),
 tags(

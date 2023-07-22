@@ -8,24 +8,31 @@ use axum::{Extension, Json};
 use axum::extract::State;
 use axum::http::{Request, StatusCode};
 use axum::response::ErrorResponse;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use surrealdb::sql::Thing;
 use tracing_subscriber::fmt::format;
+use utoipa::ToSchema;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub enum NewGameError {
     UnspecifiedDataset,
     DatasetNotFound,
+}
+
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+pub struct ErrorMessage {
+    pub cause: NewGameError,
 }
 
 impl From<NewGameError> for ErrorResponse {
     fn from(err: NewGameError) -> ErrorResponse {
         match err {
             NewGameError::UnspecifiedDataset => {
-                (StatusCode::BAD_REQUEST, Json(format!("{:?}", err))).into()
+                (StatusCode::BAD_REQUEST, Json(ErrorMessage { cause: err })).into()
             }
             NewGameError::DatasetNotFound => {
-                (StatusCode::NOT_FOUND, Json(format!("{:?}", err))).into()
+                (StatusCode::NOT_FOUND, Json(ErrorMessage { cause: err })).into()
             }
         }
     }
