@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Only trigger for version tags like "v1.0.0"
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Build release binaries for macOS, Windows, and Linux
+      - name: Build macOS
+        runs-on: macos-latest
+        steps:
+          - uses: actions/checkout@v3
+          - name: Build
+            run: cargo build --release --verbose
+
+      - name: Build Windows
+        runs-on: windows-latest
+        steps:
+          - uses: actions/checkout@v3
+          - name: Build
+            run: cargo build --release --verbose
+
+      - name: Build Linux
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v3
+          - name: Set up Rust
+            uses: actions-rs/toolchain@v1
+            with:
+              toolchain: stable
+          - name: Build
+            run: cargo build --release --verbose
+  upload-assets:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          # (required) Comma-separated list of binary names (non-extension portion of filename) to build and upload.
+          # Note that glob pattern is not supported yet.
+          bin: laerning-tool
+          archive: $bin-$tag-$target
+          include: data
+          # (optional) On which platform to distribute the `.tar.gz` file.
+          # [default value: unix]
+          # [possible values: all, unix, windows, none]
+          tar: all
+          # (optional) On which platform to distribute the `.zip` file.
+          # [default value: windows]
+          # [possible values: all, unix, windows, none]
+          zip: all
+          # (required) GitHub token for uploading assets to GitHub Releases.
+          token: ${{ secrets.GITHUB_TOKEN }}
