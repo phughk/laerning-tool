@@ -65,4 +65,5 @@ jobs:
           # [possible values: all, unix, windows, none]
           zip: all
           # (required) GitHub token for uploading assets to GitHub Releases.
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Not using GITHUB_TOKEN because that didn't have enough permissions?
+          token: ${{ secrets.RELEASE_TOKEN }}
