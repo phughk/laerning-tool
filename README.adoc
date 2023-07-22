@@ -46,10 +46,43 @@ You can access an interactive API via the normal http://localhost:3000/swagger-u
 
 The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path, if you are generating clients for this engine.
 
+== XML Format
+
+The learning modules (dataset) are a custom format that complies with XML standard.
+There is an XML Schema Definition declared in `laerning-module.xsd`.
+You can link it at the top of your XML files (like the ones in `data/`) to have it checked for correctness in your editor.
 
 == Diagrams
 
 There are some helpful diagrams in the repository.
 They have the extension `.graphml` and can be opened with https://www.yworks.com/products/yed[yEd graph editor].
+
+== Frequently Asked Questions
+
+=== How do I run/test/build
+
+This is a standard cargo project.
+You can run the standard command.
+
+```
+cargo run
+cargo test
+cargo build --release
+```
+
+You can find pre-made releases in the releases tab to the right of the GitHub page.
+TODO link
+
+=== How do I run the binary on Mac
+
+```
+sudo spctl --master-disable
+./laerning-tool
+sudo spctl --master-enable
+```
+
+Be careful with what you run from the internet;
+The above disables your Mac's security temporarily to bypass safety checks.
+
 
 
