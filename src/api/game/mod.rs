@@ -5,9 +5,10 @@ use crate::api::ApiState;
 
 use axum::{Extension, Json};
 
-use axum::extract::State;
+use axum::extract::{Path, State};
 use axum::http::{Request, StatusCode};
 use axum::response::ErrorResponse;
+use log::trace;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use surrealdb::sql::Thing;
@@ -82,6 +83,43 @@ pub async fn game_new(
             },
         )?,
         dataset: created_game.dataset.id.to_string(),
+        current_question: None,
+        stats: GameStats {
+            current_question: 1,
+            total_questions: 2,
+            current_try: 3,
+            max_tries: 4,
+            duration: 5,
+            average_question_duration: 6.0,
+        },
+    }))
+}
+
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+pub struct GameAnswerRequest {}
+
+#[utoipa::path(
+    post,
+    path = "/game/{id}",
+    request_body=GameAnswerRequest,
+    params(
+        ("id" = String, Path, description = "Game ID")
+    ),
+    responses(
+        (status = 201, description = "Game responded to successfully", body = Game),
+        (status = 400, description = "Bad Request", body = ErrorMessage),
+        (status = 404, description = "Dataset Not Found", body = ErrorMessage),
+    )
+)]
+pub async fn game_answer(
+    Path(id): Path<String>,
+    State(state): State<Arc<ApiState>>,
+    Json(request): Json<GameAnswerRequest>,
+) -> Result<Json<Game>, ErrorResponse> {
+    trace!("{:?}  {:?}", id, request);
+    Ok(Json(Game {
+        name: "".to_string(),
+        dataset: "".to_string(),
         current_question: None,
         stats: GameStats {
             current_question: 1,
