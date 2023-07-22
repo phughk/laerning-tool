@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<learning-module>
+<learning-module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="../laerning-module.xsd">
     <metadata>
         <name>Millionaire</name>
-        <description>Demonstrate a simple quiz. It is deliberately small, because I needed a different dataset to the sample.</description>
         <author>Hugh Kaznowski</author>
+        <description>Demonstrate a simple quiz. It is deliberately small, because I needed a different dataset to the sample.</description>
         <updated>2022.12.05 22:07</updated>
         <file-version>1.0.0</file-version>
         <format-version>1.0.0</format-version>

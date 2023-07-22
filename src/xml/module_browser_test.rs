@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use crate::xml::{
-        Answer, Category, EntryTag, LearningModuleEntries, LearningModuleEntry,
+        Answer, CategoryDeclaration, EntryTag, LearningModuleEntries, LearningModuleEntry,
         LearningModuleEntryType, Question,
     };
     use serde::Deserialize;
@@ -31,10 +31,11 @@ mod tests {
 
     #[test]
     fn category_des_test() {
-        let input = "<category id=\"abc-123\">category text</category>";
-        let actual =
-            Category::deserialize(&mut Deserializer::new(EventReader::new(input.as_bytes())));
-        let expected = Category {
+        let input = "<category-declaration id=\"abc-123\">category text</category-declaration>";
+        let actual = CategoryDeclaration::deserialize(&mut Deserializer::new(EventReader::new(
+            input.as_bytes(),
+        )));
+        let expected = CategoryDeclaration {
             id: "abc-123".to_string(),
             label: "category text".to_string(),
         };

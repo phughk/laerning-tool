@@ -99,7 +99,7 @@ pub struct LearningModuleEntry {
 pub enum EntryTag {
     Question(Question),
     Answer(Answer),
-    Category(Category),
+    CategoryDeclaration(CategoryDeclaration),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -123,7 +123,7 @@ pub struct Answer {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[allow(dead_code)]
-pub struct Category {
+pub struct CategoryDeclaration {
     pub id: String,
     #[serde(rename = "$value")]
     pub label: String,

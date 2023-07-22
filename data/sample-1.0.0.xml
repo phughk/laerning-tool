@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<learning-module>
+<learning-module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="../laerning-module.xsd">
     <metadata>
         <name>Sample Dataset</name>
         <author>Hugh Kaznowski</author>
@@ -23,9 +24,10 @@
             <answer correct="false" id="m">Magenta</answer>
         </entry>
         <entry type="category" id="verb_noun_adjective" sampleable="true">
-            <category id="verb">Verb</category>
-            <category id="noun">Noun</category>
-            <category id="adjective">Adjective</category>
+            <question>Match the words to the parts of a sentence</question>
+            <category-declaration id="verb">Verb</category-declaration>
+            <category-declaration id="noun">Noun</category-declaration>
+            <category-declaration id="adjective">Adjective</category-declaration>
             <answer category="verb" id="v_laugh">Laughing</answer> <!-- This could hypothetically be (to) "Happy", conflicting with adjective. Then both categories are valid-->
             <answer category="noun" id="n_happ">Happiness</answer>
             <answer category="adjective" id="a_happ">Happy</answer>
