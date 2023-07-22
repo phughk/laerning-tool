@@ -49,8 +49,8 @@ The spec itself is available at the http://localhost:3000/api-docs/openapi.json[
 == XML Format
 
 The learning modules (dataset) are a custom format that complies with XML standard.
-There is an XML Schema Definition declared in `laerning-module.xsd`.
-You can link it at the top of your XML files (like the ones in `data/`) to have it checked for correctness in your editor.
+There is an XML Schema Definition declared in file://laerning-module.xsd[laerning-module.xsd].
+You can link it at the top of your XML files (like the ones in file://data/[data/]) to have it checked for correctness in your editor.
 
 == Diagrams
 
