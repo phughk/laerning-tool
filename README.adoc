@@ -57,6 +57,34 @@ You can link it at the top of your XML files (like the ones in https://github.co
 There are some helpful diagrams in the repository.
 They have the extension `.graphml` and can be opened with https://www.yworks.com/products/yed[yEd graph editor].
 
+== Labels and contributing
+
+Contributions are very much welcome and encouraged!
+I will definitely try as much as possible to help people add to this project.
+
+Below is an explanation of the labels used in the issues tab.
+You should be able to use these to find tickets you would like to pick up.
+
+====
+image:https://img.shields.io/github/issues/phughk/laerning-tool/dataset?labelColor=%23A4BEE4[GitHub issues by-label]
+
+Dataset issues are related to xml files located under 'data' directory only.
+Some may be about introducing new datasets.
+Others may be about improving existing ones.
+====
+
+====
+image:https://img.shields.io/github/issues/phughk/laerning-tool/bug?labelColor=d73a4a&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
+
+Bug issues are for tracking flaws in existing functionality.
+====
+
+====
+image:https://img.shields.io/github/issues/phughk/laerning-tool/ehancement?labelColor=%23a2eeef&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Aenhancement[GitHub issues by-label]
+
+Enhancement issues are for tracking features. These tend to be bigger, but not always.
+====
+
 == Frequently Asked Questions
 
 === How do I run/test/build from source

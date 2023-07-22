@@ -46,6 +46,7 @@ async fn start_server(repository: LaerningToolRepository) {
 
     // Start the server
     println!("Server running on http://{}", addr);
+    println!("Swagger UI available at: http://{}/swagger-ui/#/", addr);
     Server::bind(&addr).serve(app).await.unwrap();
 }
 
