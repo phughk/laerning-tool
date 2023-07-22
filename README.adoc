@@ -50,6 +50,6 @@ The spec itself is available at the http://localhost:3000/api-docs/openapi.json[
 == Diagrams
 
 There are some helpful diagrams in the repository.
-They have the extension `.graphml` and can be opened with yEd chart editor.
+They have the extension `.graphml` and can be opened with https://www.yworks.com/products/yed[yEd graph editor].
 
 
