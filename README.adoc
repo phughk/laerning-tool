@@ -67,7 +67,6 @@ You should be able to use these to find tickets you would like to pick up.
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/dataset?labelColor=%23A4BEE4[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Adataset[Dataset issues] are related to xml files located under 'data' directory only.
 Some may be about introducing new datasets.
 Others may be about improving existing ones.
@@ -75,32 +74,27 @@ Others may be about improving existing ones.
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/bug?labelColor=d73a4a[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Abug[Bug issues] are for tracking flaws in existing functionality.
 ====
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/ehancement?labelColor=%23a2eeef[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement[Enhancement] issues are for tracking features. These tend to be bigger, but not always.
 ====
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/good%20first%20issue?labelColor=%237057ff&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22[Good first issue] tickets are a great entry point if you are new to contributing or otherwise want something easier to do.
 ====
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/help%20wanted?labelColor=%23008672&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22+[Help wanted] issues are tickets that I would like, but am almost convinced I do not have the capacity to do them myself.
 These tend to be great to pick up as they may have minimal impact on the main work happening, and can be worked on independently.
 ====
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/refactor?labelColor=%230A5192&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor[Refactor tickets] are all about changing the code without breaking anything.
 This will be necessary to maintain a nice codebase.
 The tickets can be fun if you would like to get familiar with a specific technology or way of doing things in rust.
@@ -108,7 +102,6 @@ The tickets can be fun if you would like to get familiar with a specific technol
 
 ====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/triage?labelColor=%23DD5BE2&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
-
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Atriage+[Triage] issues are new issues that I haven't looked at yet.
 It means I have yet to review and categorise them properly.
 ====
