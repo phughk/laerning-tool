@@ -38,11 +38,15 @@ There are many more.
 Any time you would have said "ah, I should put some effort into getting better at this!", this software should be the answer.
 The datasets should be available online so others can use the data created!
 
+More info can be found on the https://github.com/phughk/laerning-tool/wiki[Wiki].
+
 == OpenAPI specification
 
 There is an OpenAPI specification and associated SwaggerUI interface to get to grips with the engine easier.
 
 You can access an interactive API via the normal http://localhost:3000/swagger-ui/#/[/swagger-ui] path.
+
+I also have a https://saas.laerning-tool.com/swagger-ui/[hosted site] where you should be able to play around with the latest release.
 
 The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path, if you are generating clients for this engine.
 
