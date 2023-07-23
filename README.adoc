@@ -15,7 +15,7 @@ image:https://img.shields.io/github/contributors/phughk/laerning-tool[GitHub con
 
 == Introduction
 
-Laerning Tool is an API that provides access to learning environments.
+Laerning Tool is an API that provides access to learning environments for flash-card style questions.
 This is useful for various scenarios
 
 Obvious uses:
