@@ -41,4 +41,6 @@ impl LaerningToolRepository {
             .unwrap();
         Ok(data)
     }
+
+    pub async fn post_answer(&self) -> Result<Game, AnswerError> {}
 }
