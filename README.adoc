@@ -15,10 +15,10 @@ image:https://img.shields.io/github/contributors/phughk/laerning-tool[GitHub con
 
 == Introduction
 
-Laerning Tool is an API that provides access to learning environments.
+Laerning Tool is an API that provides access to learning environments for flash-card style questions.
 This is useful for various scenarios
 
-Obvious (scholarly) uses:
+Obvious uses:
 
 - learning languages
 - learning topics (such as electro dynamics)
@@ -38,11 +38,15 @@ There are many more.
 Any time you would have said "ah, I should put some effort into getting better at this!", this software should be the answer.
 The datasets should be available online so others can use the data created!
 
+More info can be found on the https://github.com/phughk/laerning-tool/wiki[Wiki].
+
 == OpenAPI specification
 
 There is an OpenAPI specification and associated SwaggerUI interface to get to grips with the engine easier.
 
 You can access an interactive API via the normal http://localhost:3000/swagger-ui/#/[/swagger-ui] path.
+
+I also have a https://saas.laerning-tool.com/swagger-ui/[hosted site] where you should be able to play around with the latest release.
 
 The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path, if you are generating clients for this engine.
 
@@ -56,6 +60,16 @@ You can link it at the top of your XML files (like the ones in https://github.co
 
 There are some helpful diagrams in the repository.
 They have the extension `.graphml` and can be opened with https://www.yworks.com/products/yed[yEd graph editor].
+
+== Roadmap
+
+image:https://img.shields.io/github/milestones/open/phughk/laerning-tool[GitHub milestones]
+image:https://img.shields.io/github/milestones/progress-percent/phughk/laerning-tool/1[GitHub milestone]
+image:https://img.shields.io/github/milestones/progress-percent/phughk/laerning-tool/2[GitHub milestone]
+image:https://img.shields.io/github/milestones/progress-percent/phughk/laerning-tool/3[GitHub milestone]
+
+The roadmap is better described in individual https://github.com/phughk/laerning-tool/milestones[milestones].
+
 
 == Labels and contributing
 
@@ -117,6 +131,7 @@ You can run the standard commands.
 cargo run
 cargo test
 cargo build --release
+RUST_LOG=laerning_tool=trace,surrealdb=debug cargo run
 ```
 
 You can find pre-made releases in the https://github.com/phughk/laerning-tool/releases[releases tab] to the right of the GitHub page.

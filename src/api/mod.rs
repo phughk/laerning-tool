@@ -14,6 +14,7 @@ use crate::api::game::game::GameStats;
 use crate::api::game::game::GameStatus;
 use crate::api::game::game::NewGameRequest;
 use crate::api::game::game::QuestionEntry;
+use crate::api::game::GameAnswerRequest;
 
 use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Router};
@@ -47,6 +48,7 @@ paths(
     dataset::dataset_list,
     game::game_new,
     game::game_list,
+    game::game_answer,
 ),
 components(
     schemas(
@@ -62,6 +64,7 @@ components(
         QuestionEntry,
         NewGameErrorResponse,
         NewGameError,
+        GameAnswerRequest,
     )
 ),
 tags(
@@ -84,6 +87,10 @@ impl ApiInstance {
             .route(
                 "/game/list",
                 get(game::game_list).with_state(self.state.clone()),
+            )
+            .route(
+                "/game/:id",
+                post(game::game_answer).with_state(self.state.clone()),
             )
     }
 

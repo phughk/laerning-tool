@@ -52,6 +52,7 @@ async fn start_server(repository: LaerningToolRepository) {
 
 #[tokio::main]
 async fn main() {
+    env_logger::init();
     let data = load_data().await;
     let db = start_db().await;
     let repository = repository::new(db);
