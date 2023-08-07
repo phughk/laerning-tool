@@ -1,19 +1,16 @@
 use std::sync::Arc;
 
 use axum::extract::State;
-use axum::http::StatusCode;
-use axum::response::IntoResponse;
+
 use axum::Json;
-use serde::{Deserialize, Serialize};
+
 use surrealdb::sql::Thing;
-use utoipa::ToSchema;
 
 use crate::api::game::error::{
     GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
 };
 use crate::api::game::game::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
 use crate::api::ApiState;
-use crate::repository::game::GameError;
 
 pub mod error;
 pub mod game;

@@ -6,9 +6,9 @@
 /// The struct therefore implements From<enum> and IntoResponse so that the correct HTTP response
 /// is sent.
 use axum::http::StatusCode;
-use axum::response::{ErrorResponse, IntoResponse, Response};
+use axum::response::{IntoResponse, Response};
 use axum::Json;
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{Serialize};
 use utoipa::ToSchema;
 
 /// NewGameError for POST /game endpoint

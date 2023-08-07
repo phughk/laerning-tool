@@ -16,9 +16,9 @@ use crate::api::game::game::NewGameRequest;
 use crate::api::game::game::QuestionEntry;
 
 use axum::routing::{post, IntoMakeService};
-use axum::{routing::get, Extension, Router};
+use axum::{routing::get, Router};
 use std::sync::Arc;
-use utoipa::{Modify, OpenApi};
+use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 /// ApiState is all the information required to use the application
