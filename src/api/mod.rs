@@ -4,6 +4,9 @@ mod test;
 
 use crate::repository::LaerningToolRepository;
 
+use crate::api::game::error::{
+    GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
+};
 use crate::api::game::game::AnswerType;
 use crate::api::game::game::Game;
 use crate::api::game::game::GameListing;
@@ -11,8 +14,6 @@ use crate::api::game::game::GameStats;
 use crate::api::game::game::GameStatus;
 use crate::api::game::game::NewGameRequest;
 use crate::api::game::game::QuestionEntry;
-use crate::api::game::ErrorMessage;
-use crate::api::game::NewGameError;
 
 use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Extension, Router};
@@ -53,11 +54,13 @@ components(
         AnswerType,
         Game,
         GameListing,
+        GameListingError,
+        GameListingErrorResponse,
         GameStats,
         GameStatus,
         NewGameRequest,
         QuestionEntry,
-        ErrorMessage,
+        NewGameErrorResponse,
         NewGameError,
     )
 ),

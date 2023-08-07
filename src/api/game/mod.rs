@@ -1,48 +1,22 @@
-pub(crate) mod game;
-
-use crate::api::game::game::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
-use crate::api::ApiState;
-
-use axum::{Extension, Json};
+use std::sync::Arc;
 
 use axum::extract::State;
-use axum::http::{Request, StatusCode};
-use axum::response::ErrorResponse;
+use axum::http::StatusCode;
+use axum::response::IntoResponse;
+use axum::Json;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 use surrealdb::sql::Thing;
-use tracing_subscriber::fmt::format;
 use utoipa::ToSchema;
 
-#[derive(Debug, Serialize, Deserialize, ToSchema)]
-pub enum NewGameError {
-    UnspecifiedDataset,
-    DatasetNotFound,
-    InternalError { cause: String },
-}
+use crate::api::game::error::{
+    GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
+};
+use crate::api::game::game::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
+use crate::api::ApiState;
+use crate::repository::game::GameError;
 
-#[derive(Debug, Serialize, Deserialize, ToSchema)]
-pub struct ErrorMessage {
-    pub cause: NewGameError,
-}
-
-impl From<NewGameError> for ErrorResponse {
-    fn from(err: NewGameError) -> ErrorResponse {
-        match err {
-            NewGameError::UnspecifiedDataset => {
-                (StatusCode::BAD_REQUEST, Json(ErrorMessage { cause: err })).into()
-            }
-            NewGameError::DatasetNotFound => {
-                (StatusCode::NOT_FOUND, Json(ErrorMessage { cause: err })).into()
-            }
-            NewGameError::InternalError { .. } => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                Json(ErrorMessage { cause: err }),
-            )
-                .into(),
-        }
-    }
-}
+pub mod error;
+pub mod game;
 
 #[utoipa::path(
     post,
@@ -50,16 +24,14 @@ impl From<NewGameError> for ErrorResponse {
     request_body=NewGameRequest,
     responses(
         (status = 201, description = "Game created successfully", body = Game),
-        (status = 400, description = "Bad Request", body = ErrorMessage),
-        (status = 404, description = "Dataset Not Found", body = ErrorMessage),
+        (status = 400, description = "Bad Request", body = NewGameErrorResponse),
+        (status = 404, description = "Dataset Not Found", body = NewGameErrorResponse),
     )
 )]
 pub async fn game_new(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<NewGameRequest>,
-) -> Result<Json<Game>, ErrorResponse>
-// Deceitful! Fail type is NewGameError
-{
+) -> Result<Json<Game>, NewGameErrorResponse> {
     if request.dataset.is_empty() {
         return Err(NewGameError::UnspecifiedDataset.into());
     }
@@ -99,15 +71,24 @@ pub async fn game_new(
     path = "/game/list",
     responses(
         (status = 200, description = "Games successfully listed", body = [GameListing]),
+        (status = 500, description = "Unexpected internal error", body = GameListingErrorResponse)
     )
 )]
-pub async fn game_list(State(state): State<Arc<ApiState>>) -> Json<Vec<GameListing>> {
+pub async fn game_list(
+    State(state): State<Arc<ApiState>>,
+) -> Result<Json<Vec<GameListing>>, GameListingErrorResponse> {
     let state = state.clone();
-    let games = state.clone().repository.list_games().await.unwrap();
+    let games = state.clone().repository.list_games().await.or_else(|e| {
+        Err(Into::<GameListingErrorResponse>::into(match e {
+            _ => GameListingError::InternalError {
+                cause: "Unexpected internal error".to_string(),
+            },
+        }))
+    })?;
     let _size = games.len();
     println!("The list is {:?}", games);
 
-    Json(
+    Ok(Json(
         games
             .into_iter()
             .map(|game| GameListing {
@@ -120,5 +101,5 @@ pub async fn game_list(State(state): State<Arc<ApiState>>) -> Json<Vec<GameListi
                 status: GameStatus::Pending,
             })
             .collect(),
-    )
+    ))
 }
