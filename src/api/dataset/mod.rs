@@ -1,6 +1,6 @@
 use crate::api::ApiState;
 use axum::extract::State;
-use axum::{Extension, Json};
+use axum::{Json};
 use serde::Serialize;
 use std::sync::Arc;
 
