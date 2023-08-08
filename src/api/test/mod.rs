@@ -33,8 +33,8 @@ mod test {
 
         assert_eq!(StatusCode::OK, response.status_code(), "{:?}", response);
 
-        let bytes = response.bytes();
-        let body_str = std::str::from_utf8(&bytes).unwrap();
+        let bytes = response.as_bytes();
+        let body_str = std::str::from_utf8(bytes).unwrap();
         let game: Game = serde_json::from_str(body_str).unwrap();
         assert_eq!(
             game,

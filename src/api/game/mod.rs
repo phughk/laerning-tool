@@ -86,7 +86,7 @@ pub struct GameAnswerRequest {}
 )]
 pub async fn game_answer(
     Path(id): Path<String>,
-    State(state): State<Arc<ApiState>>,
+    State(_state): State<Arc<ApiState>>,
     Json(request): Json<GameAnswerRequest>,
 ) -> Result<Json<Game>, ErrorResponse> {
     trace!("{:?}  {:?}", id, request);
