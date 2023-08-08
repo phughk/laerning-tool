@@ -1,24 +1,5 @@
-[package]
-name = "laerning-tool"
-version = "0.2.0"
-edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-axum = "0.6.18"
-axum-test = "12.1.0"
-env_logger = "0.10.0"
-hyper = { version = "0.14.27", features = ["http1"] }
-log = "0.4.19"
-scan_fmt = "0.2.6"
-serde = { version = "1.0.171", features = ["derive"] }
-serde-xml-rs = "0.6.0"
-serde_json = "1.0.103"
-surrealdb = { git = "https://github.com/surrealdb/surrealdb.git", rev = "4969e7c9694bc885eaabc0515116eac71b5e5fb7", features = ["kv-mem", "kv-rocksdb"] }
-tokio = { version = "1.29.1", features = ["macros"] }
-tracing = "0.1.37"
-tracing-subscriber = "0.3.17"
-utoipa = { version = "3.3.0", features = ["axum_extras"] }
-utoipa-swagger-ui = { version = "3.1.4", features = ["axum"] }
-xml = "0.8.10"
+[workspace]
+members = [
+    "engine",
+    "frontend"
+]
