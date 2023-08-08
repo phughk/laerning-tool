@@ -1,0 +1,12 @@
+## Setup
+
+```
+cargo install dioxus-cli
+rustup target add wasm32-unknown-unknown
+```
+
+## Dev running
+
+```
+dx serve
+```
