@@ -10,3 +10,10 @@ rustup target add wasm32-unknown-unknown
 ```
 dx serve
 ```
+
+## Dependency install
+
+```
+npx tailwindcss init
+npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
+```

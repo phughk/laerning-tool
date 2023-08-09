@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 
+use dioxus::html::div;
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
 use dioxus::prelude::rsx;
 use dioxus::prelude::Element;
@@ -18,8 +19,10 @@ fn App(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx!(
-        h1 { "High-Five counter: {count}" }
-        button { onclick: move |_| count += 1, "Up high!" }
-        button { onclick: move |_| count -= 1, "Down low!" }
+        div {
+            h1 { "High-Five counter: {count}" }
+            button { onclick: move |_| count += 1, "Up high!" }
+            button { onclick: move |_| count -= 1, "Down low!" }
+        }
     ))
 }
