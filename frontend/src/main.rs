@@ -20,9 +20,14 @@ fn App(cx: Scope) -> Element {
 
     cx.render(rsx!(
         div {
+            "class": "flex flex-col items-center space-y-4",
             h1 { "High-Five counter: {count}" }
-            button { onclick: move |_| count += 1, "Up high!" }
-            button { onclick: move |_| count -= 1, "Down low!" }
+            button {
+                "class": "px-4 py-2 bg-amber-500 text-white border border-gray-300 hover:bg-amber-700 hover:border-amber-700",
+                onclick: move |_| count += 1, "Up high!" }
+            button {
+                "class": "px-4 py-2 bg-sky-500 text-white border border-gray-300 hover:bg-sky-700 hover:border-sky-700",
+                onclick: move |_| count -= 1, "Down low!" }
         }
     ))
 }
