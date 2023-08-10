@@ -1,13 +1,11 @@
+// #![feature(unboxed_closures)]
 #![allow(non_snake_case)]
 
-use dioxus::html::div;
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
-use dioxus::prelude::rsx;
-use dioxus::prelude::Element;
+use crate::components::Button;
+use dioxus::prelude::*;
 
-use dioxus::prelude::dioxus_elements;
-use dioxus::prelude::use_state;
-use dioxus::prelude::Scope;
+mod components;
 
 fn main() {
     // launch the web app
@@ -22,11 +20,9 @@ fn App(cx: Scope) -> Element {
         div {
             "class": "flex flex-col items-center space-y-4",
             h1 { "High-Five counter: {count}" }
-            button {
-                "class": "px-4 py-2 bg-amber-500 text-white border border-gray-300 hover:bg-amber-700 hover:border-amber-700",
+            Button {
                 onclick: move |_| count += 1, "Up high!" }
-            button {
-                "class": "px-4 py-2 bg-sky-500 text-white border border-gray-300 hover:bg-sky-700 hover:border-sky-700",
+            Button {
                 onclick: move |_| count -= 1, "Down low!" }
         }
     ))
