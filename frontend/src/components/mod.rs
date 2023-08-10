@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 
-mod button_component;
+pub mod button_component;
+pub mod question_component;
 
 #[derive(Props)]
 pub struct ButtonProps<'a> {

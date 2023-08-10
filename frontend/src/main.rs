@@ -2,6 +2,7 @@
 #![allow(non_snake_case)]
 
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+use crate::components::question_component::Question;
 use crate::components::Button;
 use dioxus::prelude::*;
 
@@ -19,7 +20,9 @@ fn App(cx: Scope) -> Element {
     cx.render(rsx!(
         div {
             "class": "flex flex-col items-center space-y-4",
-            h1 { "High-Five counter: {count}" }
+            Question {
+                "High-Five counter: {count}"
+            }
             Button {
                 onclick: move |_| count += 1, "Up high!" }
             Button {
