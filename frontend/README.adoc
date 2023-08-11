@@ -8,7 +8,7 @@ rustup target add wasm32-unknown-unknown
 ## Dev running
 
 ```
-dx serve
+dx serve --hot-reload
 ```
 
 ## Dependency install
