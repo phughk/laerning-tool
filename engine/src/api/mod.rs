@@ -62,8 +62,8 @@ components(
         GameStatus,
         NewGameRequest,
         QuestionEntry,
-        NewGameErrorResponse,
         NewGameError,
+        NewGameErrorResponse,
         GameAnswerRequest,
     )
 ),

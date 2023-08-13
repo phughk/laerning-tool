@@ -8,7 +8,7 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
-use serde::{Serialize};
+use serde::Serialize;
 use utoipa::ToSchema;
 
 /// NewGameError for POST /game endpoint
@@ -16,6 +16,7 @@ use utoipa::ToSchema;
 pub enum NewGameError {
     UnspecifiedDataset,
     DatasetNotFound,
+    UnrecognisedDataset { dataset: String },
     InternalError { cause: String },
 }
 
@@ -39,6 +40,10 @@ impl From<NewGameError> for NewGameErrorResponse {
             NewGameError::InternalError { .. } => NewGameErrorResponse {
                 code: StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
                 cause: value,
+            },
+            NewGameError::UnrecognisedDataset { dataset } => NewGameErrorResponse {
+                code: StatusCode::BAD_REQUEST.as_u16(),
+                cause: NewGameError::UnrecognisedDataset { dataset },
             },
         }
     }

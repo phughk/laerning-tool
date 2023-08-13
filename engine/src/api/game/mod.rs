@@ -11,7 +11,9 @@ use crate::api::game::error::{
 };
 use crate::api::game::game::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
 use crate::api::ApiState;
+use crate::repository::dataset::DatasetError;
 use axum::extract::Path;
+use axum::http::Response;
 use axum::response::ErrorResponse;
 use log::trace;
 use serde::{Deserialize, Serialize};
@@ -38,6 +40,33 @@ pub async fn game_new(
         return Err(NewGameError::UnspecifiedDataset.into());
     }
     let state = state.clone();
+
+    let dataset = state
+        .repository
+        .get_dataset(request.dataset.as_str())
+        .await
+        .or_else(|e| {
+            Err(Into::<NewGameErrorResponse>::into(match e {
+                DatasetError::UnexpectedDatasetError { cause } => {
+                    NewGameError::InternalError { cause }
+                }
+                // TODO this is a bit silly, it won't happen
+                DatasetError::CreateDatasetFailed => NewGameError::InternalError {
+                    cause: "Failed to create dataset during new game creation".to_string(),
+                },
+            }))
+        })?;
+
+    if let None = dataset {
+        return Err(NewGameErrorResponse {
+            code: 500,
+            cause: NewGameError::UnrecognisedDataset {
+                dataset: request.dataset,
+            },
+        }
+        .into());
+    }
+
     let created_game = state
         .repository
         .create_game(crate::repository::game::Game {
@@ -80,8 +109,6 @@ pub struct GameAnswerRequest {}
     ),
     responses(
         (status = 201, description = "Game responded to successfully", body = Game),
-        (status = 400, description = "Bad Request", body = ErrorMessage),
-        (status = 404, description = "Dataset Not Found", body = ErrorMessage),
     )
 )]
 pub async fn game_answer(
