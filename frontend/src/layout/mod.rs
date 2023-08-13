@@ -1,3 +1,4 @@
+use dioxus::html::footer;
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -7,23 +8,44 @@ use crate::Routes;
 
 pub fn AppLayout(cx: Scope) -> Element {
     render! {
-        Sidebar {}
-        Outlet::<Routes> {}
-        Footer {}
+        div {
+            "class": "h-screen flex flex-row",
+            div {
+                "class" : "w-32",
+                Sidebar {}
+            }
+            div {
+                "class": "flex-row flex-grow right",
+                div {
+                    Outlet::<Routes> {}
+                }
+                Footer {}
+            }
+        }
     }
 }
 
 pub fn Sidebar(cx: Scope) -> Element {
     render! {
         div {
-            "This is the sidebar"
-            Link {
-                to: Routes::About {},
-                "About"
+            "class": "bg-gray-800 text-white flex flex-col w-32 h-screen",
+            span {
+                "class": "p-4",
+                "Laerning Tool"
             }
-            Link {
-                to: Routes::Quiz {},
-                "Quiz"
+            span {
+                "class": "p-4",
+                Link {
+                    to: Routes::About {},
+                    "About"
+                },
+            },
+            span {
+                "class": "p-4",
+                Link {
+                    to: Routes::Quiz {},
+                    "Quiz"
+                }
             }
         }
     }
@@ -32,7 +54,13 @@ pub fn Sidebar(cx: Scope) -> Element {
 pub fn Footer(cx: Scope) -> Element {
     render! {
         div {
-            "This is the footer"
+            "class": "relative h-5",
+            footer {
+                "class": "bottom",
+                div {
+                    "This is the footer"
+                }
+            }
         }
     }
 }
