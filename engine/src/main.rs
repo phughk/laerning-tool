@@ -14,8 +14,7 @@ use crate::repository::LaerningToolRepository;
 use surrealdb::Surreal;
 
 async fn load_data() -> Vec<LearningModule> {
-    let modules = xml::list_modules("data").unwrap();
-    modules
+    xml::list_modules("engine/data").unwrap()
 }
 
 async fn start_db() -> Surreal<Db> {

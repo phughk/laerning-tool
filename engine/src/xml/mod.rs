@@ -61,14 +61,14 @@ impl<'de> Visitor<'de> for VersionVisitor {
     where
         E: de::Error,
     {
-        if let Ok((major, minor, patch)) = scan_fmt!(&v.to_string(), "{d}.{d}.{d}", u32, u32, u32) {
+        if let Ok((major, minor, patch)) = scan_fmt!(&v, "{d}.{d}.{d}", u32, u32, u32) {
             return Ok(Version {
                 major,
                 minor,
                 patch,
             });
         }
-        return Err(de::Error::custom("not a version"));
+        Err(de::Error::custom("not a version"))
     }
 }
 
@@ -140,7 +140,7 @@ pub enum LearningModuleEntryType {
 
 impl Default for LearningModuleEntryType {
     fn default() -> Self {
-        return LearningModuleEntryType::None;
+        LearningModuleEntryType::None
     }
 }
 
@@ -157,28 +157,29 @@ pub fn list_modules(directory: &str) -> Result<Vec<LearningModule>, error::Error
                 let dir_e =
                     path.map_err(|_std_io_error| -> error::Error { error::Error::IoError {} })?;
                 let path_str = format!("{dir_e:?}");
-                error::Error::ListModuleError {
+                let mod_err = error::Error::ListModuleError {
                     error: e_str,
                     path: path_str,
                 };
+                return Err(mod_err);
             }
         }
     }
-    return Ok(ret);
+    Ok(ret)
 }
 
 fn read_module(filename: String) -> Result<LearningModule, error::Error> {
     let file = fs::File::open(filename).unwrap();
     let file = io::BufReader::new(file);
     let reader = EventReader::new(file);
-    return read_module_content(reader);
+    read_module_content(reader)
 }
 
 fn read_module_content(
     event_reader: EventReader<io::BufReader<fs::File>>,
 ) -> Result<LearningModule, error::Error> {
     match LearningModule::deserialize(&mut Deserializer::new(event_reader)) {
-        Ok(x) => return Ok(x),
-        Err(_) => return Err(error::Error::SerdeError {}),
+        Ok(x) => Ok(x),
+        Err(_) => Err(error::Error::SerdeError {}),
     }
 }

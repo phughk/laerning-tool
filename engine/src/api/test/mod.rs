@@ -2,7 +2,7 @@
 mod test {
     use crate::api;
 
-    use crate::api::game::game::{Game, GameStats};
+    use crate::api::game::game_library::{Game, GameStats};
     use axum::http::StatusCode;
     use axum_test::http::header::CONTENT_TYPE;
     use axum_test::http::HeaderValue;

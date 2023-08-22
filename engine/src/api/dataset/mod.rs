@@ -1,9 +1,9 @@
 use crate::api::ApiState;
+
 use axum::extract::State;
-use axum::{Json};
+use axum::Json;
 use serde::Serialize;
 use std::sync::Arc;
-
 use utoipa::ToSchema;
 
 #[derive(Serialize, ToSchema)]

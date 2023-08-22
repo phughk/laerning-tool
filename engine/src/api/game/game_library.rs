@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-
 use utoipa::ToSchema;
 
 #[derive(Deserialize, Serialize, ToSchema, Debug, PartialEq)]

@@ -1,15 +1,12 @@
-use std::sync::Arc;
-
 use axum::extract::State;
-
 use axum::Json;
-
+use std::sync::Arc;
 use surrealdb::sql::Thing;
 
 use crate::api::game::error::{
     GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
 };
-use crate::api::game::game::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
+use crate::api::game::game_library::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
 use crate::api::ApiState;
 use axum::extract::Path;
 use axum::response::ErrorResponse;
@@ -18,7 +15,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 pub mod error;
-pub mod game;
+pub mod game_library;
 
 #[utoipa::path(
     post,
@@ -117,13 +114,15 @@ pub async fn game_list(
     State(state): State<Arc<ApiState>>,
 ) -> Result<Json<Vec<GameListing>>, GameListingErrorResponse> {
     let state = state.clone();
-    let games = state.clone().repository.list_games().await.or_else(|e| {
-        Err(Into::<GameListingErrorResponse>::into(match e {
-            _ => GameListingError::InternalError {
-                cause: "Unexpected internal error".to_string(),
-            },
-        }))
-    })?;
+    let games = state.clone().repository.list_games().await
+        .map_err(|e| {
+            //Match statement below seems redundant, it could be parsed directly. Is there a future need for it? like categorizing error?
+            Into::<GameListingErrorResponse>::into(match e { 
+                _ => GameListingError::InternalError {
+                    cause: "Unexpected internal error".to_string(),
+                },
+            })})
+        ?;
     let _size = games.len();
     println!("The list is {:?}", games);
 

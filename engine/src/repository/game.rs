@@ -2,8 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::repository::LaerningToolRepository;
 
-
-use surrealdb::sql::{Thing};
+use surrealdb::sql::Thing;
 
 /// A Game is a session that is constructed from a single dataset.
 /// It is currently tied to a single user, but down the line may be tied with several.
