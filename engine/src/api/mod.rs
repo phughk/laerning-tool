@@ -8,7 +8,7 @@ use crate::api::game::error::{
     GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
 };
 use crate::api::game::game_library::{
-    AnswerType, Game, GameListing, GameStats, GameStatus, NewGameRequest, QuestionEntry,
+    AnswerType, GameJson, GameListing, GameStats, GameStatus, NewGameRequest, QuestionEntry,
 };
 use crate::api::game::GameAnswerRequest;
 
@@ -48,9 +48,9 @@ paths(
 ),
 components(
     schemas(
-        dataset::Dataset,
+        dataset::DatasetJson,
         AnswerType,
-        Game,
+        GameJson,
         GameListing,
         GameListingError,
         GameListingErrorResponse,
@@ -84,10 +84,7 @@ impl ApiInstance {
                 "/game/list",
                 get(game::game_list).with_state(self.state.clone()),
             )
-            .route(
-                "/game/:id",
-                post(game::game_answer).with_state(self.state),
-            )
+            .route("/game/:id", post(game::game_answer).with_state(self.state))
     }
 
     pub async fn make_server(self) -> IntoMakeService<Router> {

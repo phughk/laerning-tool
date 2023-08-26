@@ -6,8 +6,12 @@ use surrealdb::sql::Thing;
 use crate::api::game::error::{
     GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
 };
-use crate::api::game::game_library::{Game, GameListing, GameStats, GameStatus, NewGameRequest};
+use crate::api::game::game_library::{
+    GameJson, GameListing, GameStats, GameStatus, NewGameRequest,
+};
 use crate::api::ApiState;
+use crate::repository::game::Game;
+use crate::repository::Repository;
 use axum::extract::Path;
 use axum::response::ErrorResponse;
 use log::trace;
@@ -30,14 +34,14 @@ pub mod game_library;
 pub async fn game_new(
     State(state): State<Arc<ApiState>>,
     Json(request): Json<NewGameRequest>,
-) -> Result<Json<Game>, NewGameErrorResponse> {
+) -> Result<Json<GameJson>, NewGameErrorResponse> {
     if request.dataset.is_empty() {
         return Err(NewGameError::UnspecifiedDataset.into());
     }
     let state = state.clone();
     let created_game = state
         .repository
-        .create_game(crate::repository::game::Game {
+        .create(Game {
             id: request
                 .name
                 .map(|id_str| Thing::from(("game".to_string(), id_str))),
@@ -46,7 +50,7 @@ pub async fn game_new(
         .await
         .unwrap();
 
-    Ok(Json(Game {
+    Ok(Json(GameJson {
         name: created_game.id.map(|thing| thing.id.to_string()).ok_or(
             NewGameError::InternalError {
                 cause: "Missing ID after creation".to_string(),
@@ -85,9 +89,9 @@ pub async fn game_answer(
     Path(id): Path<String>,
     State(_state): State<Arc<ApiState>>,
     Json(request): Json<GameAnswerRequest>,
-) -> Result<Json<Game>, ErrorResponse> {
+) -> Result<Json<GameJson>, ErrorResponse> {
     trace!("{:?}  {:?}", id, request);
-    Ok(Json(Game {
+    Ok(Json(GameJson {
         name: "".to_string(),
         dataset: "".to_string(),
         current_question: None,
@@ -114,22 +118,18 @@ pub async fn game_list(
     State(state): State<Arc<ApiState>>,
 ) -> Result<Json<Vec<GameListing>>, GameListingErrorResponse> {
     let state = state.clone();
-    let games = state.clone().repository.list_games().await
-        .map_err(|e| {
-            //Match statement below seems redundant, it could be parsed directly. Is there a future need for it? like categorizing error?
-            Into::<GameListingErrorResponse>::into(match e { 
-                _ => GameListingError::InternalError {
-                    cause: "Unexpected internal error".to_string(),
-                },
-            })})
-        ?;
+    let games = state.clone().repository.list_nature().await.map_err(|e| {
+        Into::<GameListingErrorResponse>::into(GameListingError::InternalError {
+            cause: "Unexpected internal error".to_string(),
+        })
+    })?;
     let _size = games.len();
     println!("The list is {:?}", games);
 
     Ok(Json(
         games
             .into_iter()
-            .map(|game| GameListing {
+            .map(|game: Game| GameListing {
                 name: game
                     .id
                     .map(|thing| thing.id.to_string())

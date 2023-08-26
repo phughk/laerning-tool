@@ -8,7 +8,7 @@ pub struct NewGameRequest {
 }
 
 #[derive(Deserialize, Serialize, ToSchema, Debug, PartialEq)]
-pub struct Game {
+pub struct GameJson {
     pub name: String,
     pub dataset: String,
     pub current_question: Option<QuestionEntry>,

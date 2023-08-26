@@ -10,7 +10,7 @@ use std::net::SocketAddr;
 use surrealdb::engine::local::{Db, Mem};
 
 use crate::repository::dataset::Dataset;
-use crate::repository::LaerningToolRepository;
+use crate::repository::{LaerningToolRepository, Repository};
 use surrealdb::Surreal;
 
 async fn load_data() -> Vec<LearningModule> {
@@ -54,9 +54,9 @@ async fn main() {
     env_logger::init();
     let data = load_data().await;
     let db = start_db().await;
-    let repository = repository::new(db);
+    let repository = LaerningToolRepository::new(db);
     repository
-        .batch_create_datasets(
+        .create_batch(
             data.into_iter()
                 .map(|module| Dataset::from(module))
                 .collect::<Vec<Dataset>>(),

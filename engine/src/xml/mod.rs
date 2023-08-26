@@ -70,6 +70,16 @@ impl<'de> Visitor<'de> for VersionVisitor {
         }
         Err(de::Error::custom("not a version"))
     }
+
+    /*
+        TODO: #38 you should not implement `visit_string` without also implementing `visit_str`, 
+        hence `visit_str` has to be implemented
+    */
+    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+        where
+            E: de::Error, {
+        todo!()
+    }
 }
 
 impl<'de> de::Deserialize<'de> for Version {
@@ -129,24 +139,19 @@ pub struct CategoryDeclaration {
     pub label: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub enum LearningModuleEntryType {
+    #[default]
     None,
     SingleChoice,
     MultipleChoice,
     Category,
 }
 
-impl Default for LearningModuleEntryType {
-    fn default() -> Self {
-        LearningModuleEntryType::None
-    }
-}
-
 pub fn list_modules(directory: &str) -> Result<Vec<LearningModule>, error::Error> {
     let paths =
-        fs::read_dir(directory).map_err(|_e| -> error::Error { error::Error::IoError {} })?;
+        fs::read_dir(directory).map_err(|_e| -> error::Error { error::Error::Io {} })?;
     let mut ret = Vec::new();
     for path in paths {
         let module = read_module(path.as_ref().unwrap().path().display().to_string());
@@ -155,9 +160,9 @@ pub fn list_modules(directory: &str) -> Result<Vec<LearningModule>, error::Error
             Err(e) => {
                 let e_str = format!("{e:?}");
                 let dir_e =
-                    path.map_err(|_std_io_error| -> error::Error { error::Error::IoError {} })?;
+                    path.map_err(|_std_io_error| -> error::Error { error::Error::Io {} })?;
                 let path_str = format!("{dir_e:?}");
-                let mod_err = error::Error::ListModuleError {
+                let mod_err = error::Error::ListModule {
                     error: e_str,
                     path: path_str,
                 };
@@ -180,6 +185,6 @@ fn read_module_content(
 ) -> Result<LearningModule, error::Error> {
     match LearningModule::deserialize(&mut Deserializer::new(event_reader)) {
         Ok(x) => Ok(x),
-        Err(_) => Err(error::Error::SerdeError {}),
+        Err(_) => Err(error::Error::Serde {}),
     }
 }
