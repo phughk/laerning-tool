@@ -2,10 +2,11 @@ use crate::repository::dataset::DatasetError::CreateDatasetFailed;
 use crate::repository::LaerningToolRepository;
 use crate::xml::LearningModule;
 
+use log::error;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
 
-use surrealdb::sql;
+use surrealdb::{sql, Error};
 
 use surrealdb::sql::{Array, Number, Object, Strand, Value};
 
@@ -163,7 +164,14 @@ impl Into<Value> for DatasetEntryTag {
 
 #[derive(Deserialize, Debug)]
 pub enum DatasetError {
+    // Unable to create a dataset in the db
     CreateDatasetFailed,
+
+    // This will be thrown for every DB error we don't handle
+    // But we don't want to show the DB error to the user
+    // So instead we can give a cause that can be grepped
+    // and log the db error instead
+    UnexpectedDatasetError { cause: String },
 }
 
 impl LaerningToolRepository {
@@ -195,5 +203,44 @@ impl LaerningToolRepository {
             .unwrap()
             .take(0)
             .unwrap()
+    }
+
+    pub async fn get_dataset(&self, id: &str) -> Result<Option<Dataset>, DatasetError> {
+        Ok(self
+            .db
+            .query("SELECT * FROM dataset:$id")
+            .bind(("id", id))
+            .await
+            .or_else(|e| {
+                let err = DatasetError::UnexpectedDatasetError {
+                    cause: "Failed to retrieve the dataset with the provided id".to_string(),
+                };
+                match e {
+                    Error::Db(cause) => {
+                        error!("Unhandled db error {}, throwing {:?}", cause, err);
+                        Err(err)
+                    }
+                    Error::Api(cause) => {
+                        error!("Unhandled api error {}, throwing {:?}", cause, err);
+                        Err(err)
+                    }
+                }
+            })?
+            .take(0)
+            .or_else(|e| {
+                let err = DatasetError::UnexpectedDatasetError {
+                    cause: "After retrieving the dataset, there was no first result".to_string(),
+                };
+                match e {
+                    Error::Db(cause) => {
+                        error!("Unhandled db error {}, throwing {:?}", cause, err);
+                        Err(err)
+                    }
+                    Error::Api(cause) => {
+                        error!("Unhandled api error {}, throwing {:?}", cause, err);
+                        Err(err)
+                    }
+                }
+            })?)
     }
 }
