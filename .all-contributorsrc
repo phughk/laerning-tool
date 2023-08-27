@@ -1,5 +1,21 @@
 {
   "projectName": "laerning-tool",
   "projectOwner": "phughk",
-  "files": ["README.adoc"]
+  "files": [
+    "README.adoc"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "seun-ja",
+      "name": "Aminu 'Seun Joshua",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34725212?v=4",
+      "profile": "https://oluseun.dev",
+      "contributions": [
+        "test"
+      ]
+    }
+  ]
 }
