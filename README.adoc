@@ -147,5 +147,14 @@ sudo spctl --master-enable
 Be careful with what you run from the internet;
 The above disables your Mac's security temporarily to bypass safety checks.
 
+== Contributors
 
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
