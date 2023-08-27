@@ -2,8 +2,9 @@ use dioxus::html::footer;
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
+use crate::components::button_component::Button;
+use crate::components::create_game_component::CreateGame;
 use crate::components::question_component::Question;
-use crate::components::Button;
 use crate::{Routes, BASE_API};
 
 pub fn AppLayout(cx: Scope) -> Element {
@@ -68,17 +69,29 @@ pub fn Footer(cx: Scope) -> Element {
 pub fn Quiz(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
     let url = BASE_API;
-    render! {
-        div {
-            "class": "flex flex-col items-center space-y-4",
-            "The base url is {url}"
-            Question {
-                "High-Five counter: {count}"
+    let game_running = false;
+    match game_running {
+        true => {
+            render! {
+                div {
+                    "class": "flex flex-col items-center space-y-4",
+                    "The base url is {url}"
+                    Question {
+                        "High-Five counter: {count}"
+                    }
+                    Button {
+                        onclick: move |_| count += 1, "Up high!" }
+                    Button {
+                        onclick: move |_| count -= 1, "Down low!" }
+                }
             }
-            Button {
-                onclick: move |_| count += 1, "Up high!" }
-            Button {
-                onclick: move |_| count -= 1, "Down low!" }
+        }
+        false => {
+            render! {
+                CreateGame {
+
+                }
+            }
         }
     }
 }
