@@ -14,6 +14,11 @@ use serde::{Deserialize, Serialize};
 mod components;
 mod layout;
 
+#[cfg(debug_assertions)]
+const BASE_API: String = "http://localhost:3000/";
+#[cfg(not(debug_assertions))]
+const BASE_API: String = "/api";
+
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 enum Routes {
     #[layout(AppLayout)]
