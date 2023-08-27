@@ -18,7 +18,7 @@ mod layout;
 #[cfg(debug_assertions)]
 const BASE_API: &str = "http://localhost:3000/";
 #[cfg(not(debug_assertions))]
-const BASE_API: &str = "/api";
+const BASE_API: &str = env!("LAERNING_TOOL_API");
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 enum Routes {
