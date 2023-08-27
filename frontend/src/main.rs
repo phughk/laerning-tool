@@ -1,6 +1,7 @@
 // #![feature(unboxed_closures)]
 #![allow(non_snake_case)]
 
+use std::string::ToString;
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
 use crate::components::question_component::Question;
 use crate::components::Button;
@@ -13,6 +14,11 @@ use serde::{Deserialize, Serialize};
 
 mod components;
 mod layout;
+
+#[cfg(debug_assertions)]
+const BASE_API: &str = "http://localhost:3000/";
+#[cfg(not(debug_assertions))]
+const BASE_API: &str = env!("LAERNING_TOOL_API");
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 enum Routes {
