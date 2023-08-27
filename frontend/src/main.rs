@@ -1,6 +1,7 @@
 // #![feature(unboxed_closures)]
 #![allow(non_snake_case)]
 
+use std::string::ToString;
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
 use crate::components::question_component::Question;
 use crate::components::Button;
@@ -15,9 +16,9 @@ mod components;
 mod layout;
 
 #[cfg(debug_assertions)]
-const BASE_API: String = "http://localhost:3000/";
+const BASE_API: &str = "http://localhost:3000/";
 #[cfg(not(debug_assertions))]
-const BASE_API: String = "/api";
+const BASE_API: &str = "/api";
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 enum Routes {

@@ -4,7 +4,7 @@ use dioxus_router::prelude::*;
 
 use crate::components::question_component::Question;
 use crate::components::Button;
-use crate::Routes;
+use crate::{Routes, BASE_API};
 
 pub fn AppLayout(cx: Scope) -> Element {
     render! {
@@ -67,9 +67,11 @@ pub fn Footer(cx: Scope) -> Element {
 
 pub fn Quiz(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
+    let url = BASE_API;
     render! {
         div {
             "class": "flex flex-col items-center space-y-4",
+            "The base url is {url}"
             Question {
                 "High-Five counter: {count}"
             }
