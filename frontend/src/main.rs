@@ -15,7 +15,7 @@ mod components;
 mod layout;
 
 #[cfg(debug_assertions)]
-const BASE_API: &str = "http://localhost:3000/";
+const BASE_API: &str = "http://localhost:3000";
 #[cfg(not(debug_assertions))]
 const BASE_API: &str = env!("LAERNING_TOOL_API");
 
