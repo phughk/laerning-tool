@@ -1,4 +1,5 @@
 {
   "projectName": "laerning-tool",
-  "projectOwner": "phughk"
+  "projectOwner": "phughk",
+  "files": ['README.adoc']
 }
