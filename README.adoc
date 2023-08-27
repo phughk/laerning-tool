@@ -1,4 +1,4 @@
-# Laerning Tool
+= Laerning Tool
 Author: Hugh Kaznowski
 Date: 2023/07/15
 
@@ -13,7 +13,7 @@ image:https://img.shields.io/github/issues/phughk/laerning-tool[GitHub issues]
 image:https://img.shields.io/github/issues-pr/phughk/laerning-tool[GitHub pull requests]
 image:https://img.shields.io/github/contributors/phughk/laerning-tool[GitHub contributors]
 
-## Introduction
+== Introduction
 
 Laerning Tool is an API that provides access to learning environments for flash-card style questions.
 This is useful for various scenarios
@@ -40,7 +40,7 @@ The datasets should be available online so others can use the data created!
 
 More info can be found on the https://github.com/phughk/laerning-tool/wiki[Wiki].
 
-## OpenAPI specification
+== OpenAPI specification
 
 There is an OpenAPI specification and associated SwaggerUI interface to get to grips with the engine easier.
 
@@ -50,18 +50,18 @@ I also have a https://saas.laerning-tool.com/swagger-ui/[hosted site] where you 
 
 The spec itself is available at the http://localhost:3000/api-docs/openapi.json[/api-docs/openapi.json] path, if you are generating clients for this engine.
 
-## XML Format
+== XML Format
 
 The learning modules (dataset) are a custom format that complies with XML standard.
 There is an XML Schema Definition declared in https://github.com/phughk/laerning-tool/blob/main/laerning-module.xsd[laerning-module.xsd].
 You can link it at the top of your XML files (like the ones in https://github.com/phughk/laerning-tool/tree/main/data[data/]) to have it checked for correctness in your editor.
 
-## Diagrams
+== Diagrams
 
 There are some helpful diagrams in the repository.
 They have the extension `.graphml` and can be opened with https://www.yworks.com/products/yed[yEd graph editor].
 
-## Roadmap
+== Roadmap
 
 image:https://img.shields.io/github/milestones/open/phughk/laerning-tool[GitHub milestones]
 image:https://img.shields.io/github/milestones/progress-percent/phughk/laerning-tool/1[GitHub milestone]
@@ -71,7 +71,7 @@ image:https://img.shields.io/github/milestones/progress-percent/phughk/laerning-
 The roadmap is better described in individual https://github.com/phughk/laerning-tool/milestones[milestones].
 
 
-## Labels and contributing
+== Labels and contributing
 
 Contributions are very much welcome and encouraged!
 I will definitely try as much as possible to help people add to this project.
@@ -79,50 +79,50 @@ I will definitely try as much as possible to help people add to this project.
 Below is an explanation of the labels used in the issues tab.
 You should be able to use these to find tickets you would like to pick up.
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/dataset?labelColor=%23A4BEE4[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Adataset[Dataset issues] are related to xml files located under 'data' directory only.
 Some may be about introducing new datasets.
 Others may be about improving existing ones.
----
+====
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/bug?labelColor=d73a4a[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Abug[Bug issues] are for tracking flaws in existing functionality.
----
+====
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/ehancement?labelColor=%23a2eeef[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement[Enhancement] issues are for tracking features. These tend to be bigger, but not always.
----
+====
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/good%20first%20issue?labelColor=%237057ff&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22[Good first issue] tickets are a great entry point if you are new to contributing or otherwise want something easier to do.
----
+====
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/help%20wanted?labelColor=%23008672&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22+[Help wanted] issues are tickets that I would like, but am almost convinced I do not have the capacity to do them myself.
 These tend to be great to pick up as they may have minimal impact on the main work happening, and can be worked on independently.
----
+====
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/refactor?labelColor=%230A5192&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor[Refactor tickets] are all about changing the code without breaking anything.
 This will be necessary to maintain a nice codebase.
 The tickets can be fun if you would like to get familiar with a specific technology or way of doing things in rust.
----
+====
 
----
+====
 image:https://img.shields.io/github/issues/phughk/laerning-tool/triage?labelColor=%23DD5BE2&link=https%3A%2F%2Fgithub.com%2Fphughk%2Flaerning-tool%2Fissues%3Fq%3Dis%253Aopen%2Bis%253Aissue%2Blabel%253Abug%2B[GitHub issues by-label]
 https://github.com/phughk/laerning-tool/issues?q=is%3Aopen+is%3Aissue+label%3Atriage+[Triage] issues are new issues that I haven't looked at yet.
 It means I have yet to review and categorise them properly.
----
+====
 
-## Frequently Asked Questions
+== Frequently Asked Questions
 
-### How do I run/test/build from source
+=== How do I run/test/build from source
 
 This is a standard cargo project.
 You can run the standard commands.
@@ -136,7 +136,7 @@ RUST_LOG=laerning_tool=trace,surrealdb=debug cargo run
 
 You can find pre-made releases in the https://github.com/phughk/laerning-tool/releases[releases tab] to the right of the GitHub page.
 
-### How do I run the binary on Mac
+=== How do I run the binary on Mac
 
 ```
 sudo spctl --master-disable
@@ -147,7 +147,7 @@ sudo spctl --master-enable
 Be careful with what you run from the internet;
 The above disables your Mac's security temporarily to bypass safety checks.
 
-## Contributors
+== Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -162,5 +162,6 @@ The above disables your Mac's security temporarily to bypass safety checks.
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
