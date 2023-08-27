@@ -2,7 +2,7 @@
   "projectName": "laerning-tool",
   "projectOwner": "phughk",
   "files": [
-    "README.adoc"
+    "README.md"
   ],
   "commitType": "docs",
   "commitConvention": "angular",
