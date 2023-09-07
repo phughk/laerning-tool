@@ -41,7 +41,7 @@ pub async fn game_new(
     let state = state.clone();
     let created_game = state
         .repository
-        .create(Game {
+        .create_dataset(Game {
             id: request
                 .name
                 .map(|id_str| Thing::from(("game".to_string(), id_str))),
@@ -118,7 +118,7 @@ pub async fn game_list(
     State(state): State<Arc<ApiState>>,
 ) -> Result<Json<Vec<GameListing>>, GameListingErrorResponse> {
     let state = state.clone();
-    let games = state.clone().repository.list_nature().await.map_err(|e| {
+    let games = state.clone().repository.create_list().await.map_err(|e| {
         Into::<GameListingErrorResponse>::into(GameListingError::InternalError {
             cause: "Unexpected internal error".to_string(),
         })

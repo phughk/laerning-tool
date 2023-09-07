@@ -22,7 +22,7 @@ pub enum GameError {
 
 #[async_trait]
 impl Repository<Game, GameError> for LaerningToolRepository {
-    async fn create(&self, game: Game) -> Result<Game, RepositoryError<GameError>> {
+    async fn create_dataset(&self, game: Game) -> Result<Game, RepositoryError<GameError>> {
         let data: Option<Game> = self
             .db
             .query(r#"INSERT INTO game $game"#)
@@ -36,14 +36,14 @@ impl Repository<Game, GameError> for LaerningToolRepository {
         Ok(data.unwrap())
     }
 
-    async fn create_batch(&self, datasets: Vec<Game>) -> Result<(), RepositoryError<GameError>> {
+    async fn create_batch_datasets(&self, datasets: Vec<Game>) -> Result<(), RepositoryError<GameError>> {
         for dataset in datasets {
-            self.create(dataset).await.unwrap();
+            self.create_dataset(dataset).await.unwrap();
         }
         Ok(())
     }
 
-    async fn list_nature(&self) -> Result<Vec<Game>, RepositoryError<GameError>> {
+    async fn create_list(&self) -> Result<Vec<Game>, RepositoryError<GameError>> {
         let data: Vec<Game> = self
             .db
             .query(r#"SELECT * FROM game LIMIT 1000"#)

@@ -56,7 +56,7 @@ async fn main() {
     let db = start_db().await;
     let repository = LaerningToolRepository::new(db);
     repository
-        .create_batch(
+        .create_batch_datasets(
             data.into_iter()
                 .map(|module| Dataset::from(module))
                 .collect::<Vec<Dataset>>(),

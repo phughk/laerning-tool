@@ -170,7 +170,7 @@ pub enum DatasetError {
 
 #[async_trait]
 impl Repository<Dataset, DatasetError> for LaerningToolRepository {
-    async fn create(&self, dataset: Dataset) -> Result<Dataset, RepositoryError<DatasetError>> {
+    async fn create_dataset(&self, dataset: Dataset) -> Result<Dataset, RepositoryError<DatasetError>> {
         let mut bindings: HashMap<String, Value> = HashMap::new();
         bindings.insert("data".to_string(), Value::Object(dataset.into()));
 
@@ -187,17 +187,17 @@ impl Repository<Dataset, DatasetError> for LaerningToolRepository {
         Ok(created.unwrap())
     }
 
-    async fn create_batch(
+    async fn create_batch_datasets(
         &self,
         datasets: Vec<Dataset>,
     ) -> Result<(), RepositoryError<DatasetError>> {
         for dataset in datasets {
-            self.create(dataset).await.unwrap();
+            self.create_dataset(dataset).await.unwrap();
         }
         Ok(())
     }
 
-    async fn list_nature(&self) -> Result<Vec<Dataset>, RepositoryError<DatasetError>> {
+    async fn create_list(&self) -> Result<Vec<Dataset>, RepositoryError<DatasetError>> {
         let data: Vec<Dataset> = self
             .db
             .query("SELECT * FROM  dataset")

@@ -25,7 +25,7 @@ pub async fn dataset_list(State(state): State<Arc<ApiState>>) -> Json<Vec<Datase
     Json(
         state
             .repository
-            .list_nature()
+            .create_list()
             .await
             .unwrap()
             .into_iter()

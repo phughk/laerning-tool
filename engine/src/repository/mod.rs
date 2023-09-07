@@ -23,9 +23,9 @@ pub enum RepositoryError<U> {
 
 #[async_trait]
 pub trait Repository<T, U> {
-    async fn create(&self, nature: T) -> Result<T, RepositoryError<U>>;
+    async fn create_dataset(&self, nature: T) -> Result<T, RepositoryError<U>>;
 
-    async fn create_batch(&self, nature: Vec<T>) -> Result<(), RepositoryError<U>>;
+    async fn create_batch_datasets(&self, nature: Vec<T>) -> Result<(), RepositoryError<U>>;
 
-    async fn list_nature(&self) -> Result<Vec<T>, RepositoryError<U>>;
+    async fn create_list(&self) -> Result<Vec<T>, RepositoryError<U>>;
 }
