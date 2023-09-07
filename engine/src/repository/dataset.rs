@@ -170,7 +170,10 @@ pub enum DatasetError {
 
 #[async_trait]
 impl Repository<Dataset, DatasetError> for LaerningToolRepository {
-    async fn create_dataset(&self, dataset: Dataset) -> Result<Dataset, RepositoryError<DatasetError>> {
+    async fn create_dataset(
+        &self,
+        dataset: Dataset,
+    ) -> Result<Dataset, RepositoryError<DatasetError>> {
         let mut bindings: HashMap<String, Value> = HashMap::new();
         bindings.insert("data".to_string(), Value::Object(dataset.into()));
 

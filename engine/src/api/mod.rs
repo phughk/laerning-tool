@@ -1,3 +1,4 @@
+pub mod cli;
 mod dataset;
 mod game;
 mod test;

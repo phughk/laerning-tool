@@ -11,7 +11,7 @@ mod test {
 
     #[tokio::test]
     async fn test_games_can_be_created() {
-        let db = crate::start_db().await;
+        let db = crate::start_db(None).await;
         let repo = LaerningToolRepository::new(db);
         let api = api::new(repo);
         let app = api.make_server().await;
