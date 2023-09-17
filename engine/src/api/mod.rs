@@ -7,13 +7,9 @@ use crate::repository::LaerningToolRepository;
 use crate::api::game::error::{
     GameListingError, GameListingErrorResponse, NewGameError, NewGameErrorResponse,
 };
-use crate::api::game::game::AnswerType;
-use crate::api::game::game::Game;
-use crate::api::game::game::GameListing;
-use crate::api::game::game::GameStats;
-use crate::api::game::game::GameStatus;
-use crate::api::game::game::NewGameRequest;
-use crate::api::game::game::QuestionEntry;
+use crate::api::game::game_library::{
+    AnswerType, GameJson, GameListing, GameStats, GameStatus, NewGameRequest, QuestionEntry,
+};
 use crate::api::game::GameAnswerRequest;
 
 use axum::http::Method;
@@ -39,9 +35,9 @@ pub struct ApiInstance {
 
 /// Create new ApiInstance that tracks and owns state
 pub fn new(repository: LaerningToolRepository) -> ApiInstance {
-    return ApiInstance {
+    ApiInstance {
         state: Arc::new(ApiState { repository }),
-    };
+    }
 }
 
 // This struct lists all the accessible API paths. For swagger.
@@ -56,9 +52,9 @@ paths(
 ),
 components(
     schemas(
-        dataset::Dataset,
+        dataset::DatasetJson,
         AnswerType,
-        Game,
+        GameJson,
         GameListing,
         GameListingError,
         GameListingErrorResponse,
@@ -92,10 +88,7 @@ impl ApiInstance {
                 "/game/list",
                 get(game::game_list).with_state(self.state.clone()),
             )
-            .route(
-                "/game/:id",
-                post(game::game_answer).with_state(self.state.clone()),
-            )
+            .route("/game/:id", post(game::game_answer).with_state(self.state))
     }
 
     pub async fn make_server(self) -> IntoMakeService<Router> {

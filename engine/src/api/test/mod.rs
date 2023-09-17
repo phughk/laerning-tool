@@ -2,7 +2,8 @@
 mod test {
     use crate::api;
 
-    use crate::api::game::game::{Game, GameStats};
+    use crate::api::game::game_library::{GameJson, GameStats};
+    use crate::repository::LaerningToolRepository;
     use axum::http::StatusCode;
     use axum_test::http::header::CONTENT_TYPE;
     use axum_test::http::HeaderValue;
@@ -11,7 +12,7 @@ mod test {
     #[tokio::test]
     async fn test_games_can_be_created() {
         let db = crate::start_db().await;
-        let repo = crate::repository::new(db);
+        let repo = LaerningToolRepository::new(db);
         let api = api::new(repo);
         let app = api.make_server().await;
 
@@ -35,10 +36,10 @@ mod test {
 
         let bytes = response.as_bytes();
         let body_str = std::str::from_utf8(bytes).unwrap();
-        let game: Game = serde_json::from_str(body_str).unwrap();
+        let game: GameJson = serde_json::from_str(body_str).unwrap();
         assert_eq!(
             game,
-            Game {
+            GameJson {
                 name: "⟨any name⟩".to_string(),
                 dataset: "⟨any dataset⟩".to_string(),
                 current_question: None,

@@ -1,13 +1,15 @@
-use crate::repository::dataset::DatasetError::CreateDatasetFailed;
 use crate::repository::LaerningToolRepository;
 use crate::xml::LearningModule;
 
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
 
 use surrealdb::sql;
 
 use surrealdb::sql::{Array, Number, Object, Strand, Value};
+
+use super::{Repository, RepositoryError};
 
 /// A dataset represents a collection of information (and questions) that can be used to generate
 /// a Game.
@@ -166,34 +168,44 @@ pub enum DatasetError {
     CreateDatasetFailed,
 }
 
-impl LaerningToolRepository {
-    pub async fn create_dataset(&self, dataset: Dataset) -> Result<Dataset, DatasetError> {
+#[async_trait]
+impl Repository<Dataset, DatasetError> for LaerningToolRepository {
+    async fn create_dataset(&self, dataset: Dataset) -> Result<Dataset, RepositoryError<DatasetError>> {
         let mut bindings: HashMap<String, Value> = HashMap::new();
         bindings.insert("data".to_string(), Value::Object(dataset.into()));
+
         let created: Option<Dataset> = self
             .db
             .query("INSERT INTO dataset $data")
             .bind(bindings)
             .await
+            .map_err(|_| RepositoryError::CreationFailed(DatasetError::CreateDatasetFailed))
             .unwrap()
             .take(0)
             .unwrap();
-        created.ok_or(CreateDatasetFailed)
+
+        Ok(created.unwrap())
     }
 
-    pub async fn batch_create_datasets(&self, datasets: Vec<Dataset>) -> Result<(), DatasetError> {
+    async fn create_batch_datasets(
+        &self,
+        datasets: Vec<Dataset>,
+    ) -> Result<(), RepositoryError<DatasetError>> {
         for dataset in datasets {
-            self.create_dataset(dataset).await?;
+            self.create_dataset(dataset).await.unwrap();
         }
         Ok(())
     }
 
-    pub async fn list_datasets(&self) -> Vec<Dataset> {
-        self.db
+    async fn create_list(&self) -> Result<Vec<Dataset>, RepositoryError<DatasetError>> {
+        let data: Vec<Dataset> = self
+            .db
             .query("SELECT * FROM  dataset")
             .await
             .unwrap()
             .take(0)
-            .unwrap()
+            .unwrap();
+
+        Ok(data)
     }
 }
