@@ -11,6 +11,15 @@ rustup target add wasm32-unknown-unknown
 dx serve --hot-reload
 ```
 
+## Release
+
+To build a release version, you can run
+```
+LAERNING_TOOL_API="https://saas.laerning-tool.com" cargo build --release
+```
+
+The environment variable can be configured with whatever API you would like to use.
+
 ## Dependency install
 
 ```

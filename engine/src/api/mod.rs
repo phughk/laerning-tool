@@ -12,9 +12,13 @@ use crate::api::game::game_library::{
 };
 use crate::api::game::GameAnswerRequest;
 
+use axum::http::Method;
 use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Router};
 use std::sync::Arc;
+use tower_http::cors::{Any, CorsLayer};
+use tracing_subscriber::filter::FilterExt;
+use tracing_subscriber::fmt::writer::MakeWriterExt;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
@@ -88,6 +92,11 @@ impl ApiInstance {
     }
 
     pub async fn make_server(self) -> IntoMakeService<Router> {
-        self.build_router().await.into_make_service()
+        let cors = CorsLayer::new()
+            // allow `GET` and `POST` when accessing the resource
+            .allow_methods([Method::GET, Method::POST])
+            // allow requests from any origin
+            .allow_origin(Any);
+        self.build_router().await.layer(cors).into_make_service()
     }
 }
