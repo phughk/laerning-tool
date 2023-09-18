@@ -36,7 +36,10 @@ impl Repository<Game, GameError> for LaerningToolRepository {
         Ok(data.unwrap())
     }
 
-    async fn create_batch_datasets(&self, datasets: Vec<Game>) -> Result<(), RepositoryError<GameError>> {
+    async fn create_batch_datasets(
+        &self,
+        datasets: Vec<Game>,
+    ) -> Result<(), RepositoryError<GameError>> {
         for dataset in datasets {
             self.create_dataset(dataset).await.unwrap();
         }
