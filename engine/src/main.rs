@@ -76,6 +76,7 @@ async fn main() {
     };
 
     let db = start_db(args.db_location).await;
+
     let repository = LaerningToolRepository::new(db);
     repository
         .create_batch_datasets(
