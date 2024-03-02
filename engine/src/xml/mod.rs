@@ -1,4 +1,5 @@
 mod error;
+#[cfg(test)]
 mod module_browser_test;
 
 use scan_fmt::scan_fmt;
@@ -72,12 +73,13 @@ impl<'de> Visitor<'de> for VersionVisitor {
     }
 
     /*
-        TODO: #38 you should not implement `visit_string` without also implementing `visit_str`, 
+        TODO: #38 you should not implement `visit_string` without also implementing `visit_str`,
         hence `visit_str` has to be implemented
     */
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
-        where
-            E: de::Error, {
+    where
+        E: de::Error,
+    {
         todo!()
     }
 }
@@ -150,8 +152,7 @@ pub enum LearningModuleEntryType {
 }
 
 pub fn list_modules(directory: &str) -> Result<Vec<LearningModule>, error::Error> {
-    let paths =
-        fs::read_dir(directory).map_err(|_e| -> error::Error { error::Error::Io {} })?;
+    let paths = fs::read_dir(directory).map_err(|_e| -> error::Error { error::Error::Io {} })?;
     let mut ret = Vec::new();
     for path in paths {
         let module = read_module(path.as_ref().unwrap().path().display().to_string());
