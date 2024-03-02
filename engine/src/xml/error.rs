@@ -6,6 +6,7 @@ pub enum Error {
     Io {},
     ListModule { error: String, path: String },
     Serde {},
+    ServerError(String),
 }
 
 impl Display for Error {
@@ -18,6 +19,7 @@ impl Display for Error {
                 error, path
             ),
             Error::Serde {} => write!(f, "Serde serialization/deserialization error"),
+            Error::ServerError(error) => write!(f, "Server unable to start: {error}"),
         }
     }
 }

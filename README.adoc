@@ -134,6 +134,27 @@ cargo build --release
 RUST_LOG=laerning_tool=trace,surrealdb=debug cargo run
 ```
 
+The project also supports CLI commands. You can run them 
+```
+./target/debug/laerning-tool-api [COMMAND]
+```
+
+Here's an example:
+
+```
+./target/debug/laerning-tool-api -h
+This is a software project to help people make flash cards to test themselves on things they want to learn.
+
+Usage: laerning-tool-api [OPTIONS]
+
+Options:
+  -b, --bind <BIND>                Socket address on which the server will listen
+      --db-location <DB_LOCATION>  SurrealDB Storage Location. Should be in URI format (ie file://)
+      --directory <DIRECTORY>      Dataset Directory location
+  -h, --help                       Print help
+  -V, --version                    Print version
+  ```
+
 You can find pre-made releases in the https://github.com/phughk/laerning-tool/releases[releases tab] to the right of the GitHub page.
 
 === How do I run the binary on Mac

@@ -76,7 +76,7 @@ impl<'de> Visitor<'de> for VersionVisitor {
         TODO: #38 you should not implement `visit_string` without also implementing `visit_str`,
         hence `visit_str` has to be implemented
     */
-    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+    fn visit_str<E>(self, _v: &str) -> Result<Self::Value, E>
     where
         E: de::Error,
     {
