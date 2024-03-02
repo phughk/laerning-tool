@@ -1,4 +1,5 @@
-pub mod error;
+mod error;
+#[cfg(test)]
 mod module_browser_test;
 
 use scan_fmt::scan_fmt;
