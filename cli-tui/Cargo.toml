@@ -9,3 +9,9 @@ edition = "2021"
 crossterm = "0.27.0"
 laerning-tool = { path = "../engine" }
 ratatui = "0.26.1"
+tokio = { version = "1.36.0", features = ["full", "tracing"] }
+console-subscriber = "0.2.0"
+tracing-subscriber = "0.3.18"
+
+[build]
+rustflags = ["--cfg", "tokio_unstable"]
