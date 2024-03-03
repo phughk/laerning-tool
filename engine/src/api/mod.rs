@@ -1,6 +1,7 @@
 pub mod cli;
 mod dataset;
 mod game;
+#[cfg(test)]
 mod test;
 
 use crate::repository::LaerningToolRepository;
@@ -92,15 +93,13 @@ impl ApiInstance {
             .route("/game/:id", post(game::game_answer).with_state(self.state))
     }
 
-    pub async fn make_server(self) -> IntoMakeService<Router> {
+    pub async fn make_server(self) -> Router {
         // let cors = CorsLayer::new()
         //     // allow `GET` and `POST` when accessing the resource
         //     .allow_methods(AllowMethods::any())
         //     // allow requests from any origin
         //     .allow_origin(Any);
-        self.build_router()
-            .await
-            // .layer(cors)
-            .into_make_service()
+        self.build_router().await
+        // .layer(cors)
     }
 }

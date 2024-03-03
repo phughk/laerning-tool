@@ -63,7 +63,10 @@ async fn start_server(
     // Start the server
     println!("Server running on http://{}", addr);
     println!("Swagger UI available at: http://{}/swagger-ui/#/", addr);
-    Server::bind(&addr).serve(app).await.unwrap();
+    Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 
     Ok(())
 }
