@@ -1,24 +1,31 @@
-mod root;
+use std::error::Error;
+use std::io::{stdout, Stdout};
+use std::time::Duration;
 
-use crate::root::RootComponent;
-use crossterm::event::{KeyCode, KeyEventKind};
 use crossterm::terminal::{
     disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
 };
 use crossterm::{event, ExecutableCommand};
 use ratatui::backend::CrosstermBackend;
 use ratatui::style::Stylize;
-use ratatui::widgets::Paragraph;
-use ratatui::{CompletedFrame, Terminal};
-use std::error::Error;
-use std::io::{stdout, Stdout};
+use ratatui::Terminal;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::watch::Receiver;
 
+use crate::root::RootComponent;
+
+mod root;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // #[cfg(debug)]
-    console_subscriber::init();
+    #[cfg(debug_assertions)]
+    {
+        println!("Debug mode enabled");
+        console_subscriber::ConsoleLayer::builder()
+            .server_addr(([127, 0, 0, 1], 6669))
+            .init();
+        tokio::time::sleep(Duration::from_secs(2)).await;
+    }
     stdout().execute(EnterAlternateScreen)?;
     enable_raw_mode()?;
     let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
@@ -68,9 +75,6 @@ async fn read_input(
         if *receiver.borrow() == TerminateMessage::Terminate {
             break;
         }
-        // if let TerminateMessage::Terminate = *receiver.borrow() {
-        //     break;
-        // }
         if event::poll(std::time::Duration::from_millis(1))? {
             let read_event = event::read()?;
             input_send
