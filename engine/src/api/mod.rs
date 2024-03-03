@@ -17,7 +17,7 @@ use axum::http::Method;
 use axum::routing::{post, IntoMakeService};
 use axum::{routing::get, Router};
 use std::sync::Arc;
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::{AllowMethods, Any, CorsLayer};
 use tracing_subscriber::filter::FilterExt;
 use tracing_subscriber::fmt::writer::MakeWriterExt;
 use utoipa::OpenApi;
@@ -46,37 +46,37 @@ pub fn new(repository: LaerningToolRepository) -> ApiInstance {
 #[derive(OpenApi)]
 #[openapi(
 paths(
-    dataset::dataset_list,
-    game::game_new,
-    game::game_list,
-    game::game_answer,
+dataset::dataset_list,
+game::game_new,
+game::game_list,
+game::game_answer,
 ),
 components(
-    schemas(
-        dataset::DatasetJson,
-        AnswerType,
-        GameJson,
-        GameListing,
-        GameListingError,
-        GameListingErrorResponse,
-        GameStats,
-        GameStatus,
-        NewGameRequest,
-        QuestionEntry,
-        NewGameErrorResponse,
-        NewGameError,
-        GameAnswerRequest,
-    )
+schemas(
+dataset::DatasetJson,
+AnswerType,
+GameJson,
+GameListing,
+GameListingError,
+GameListingErrorResponse,
+GameStats,
+GameStatus,
+NewGameRequest,
+QuestionEntry,
+NewGameErrorResponse,
+NewGameError,
+GameAnswerRequest,
+)
 ),
 tags(
-    (name = "this is a tag name", description = "This is the tag description"))
+(name = "this is a tag name", description = "This is the tag description"))
 )]
 pub struct ApiDoc;
 
 impl ApiInstance {
     pub async fn build_router(self) -> Router {
         Router::new()
-            .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+            // .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
             .route(
                 "/dataset/list",
                 get(dataset::dataset_list).with_state(self.state.clone()),
@@ -93,11 +93,14 @@ impl ApiInstance {
     }
 
     pub async fn make_server(self) -> IntoMakeService<Router> {
-        let cors = CorsLayer::new()
-            // allow `GET` and `POST` when accessing the resource
-            .allow_methods([Method::GET, Method::POST])
-            // allow requests from any origin
-            .allow_origin(Any);
-        self.build_router().await.layer(cors).into_make_service()
+        // let cors = CorsLayer::new()
+        //     // allow `GET` and `POST` when accessing the resource
+        //     .allow_methods(AllowMethods::any())
+        //     // allow requests from any origin
+        //     .allow_origin(Any);
+        self.build_router()
+            .await
+            // .layer(cors)
+            .into_make_service()
     }
 }

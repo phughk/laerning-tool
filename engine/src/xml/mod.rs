@@ -1,4 +1,4 @@
-mod error;
+pub(crate) mod error;
 #[cfg(test)]
 mod module_browser_test;
 
