@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
-members = [
+members = [ "api-server",
     "cli-tui",
     "engine",
     "frontend"
-]
+, "laerning-tool-egui"]
