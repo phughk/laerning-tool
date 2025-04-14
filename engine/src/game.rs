@@ -1,11 +1,12 @@
-use rand::{Rng, RngCore, SeedableRng};
 use crate::dataset::{Dataset, Question, QuestionType};
+use rand::{Rng, RngCore, SeedableRng};
+use std::sync::Arc;
 
-pub struct Game<'a> {
-    pub dataset: Dataset,
+pub struct Game {
+    pub dataset: Arc<Dataset>,
     pub answered: Vec<AnsweredQuestion>,
     pub rng: rand_chacha::ChaCha12Rng,
-    pub current_question: &'a Question,
+    pub current_question_index: usize,
 }
 
 pub enum QuizStrategy {
@@ -19,7 +20,7 @@ pub struct AnsweredQuestion {
 }
 
 impl Game {
-    pub fn new(dataset: Dataset, seed: Option<u64>) -> Game {
+    pub fn new(dataset: Arc<Dataset>, seed: Option<u64>) -> Game {
         let seed = seed.unwrap_or(rand::rng().next_u64());
         let mut rng = rand_chacha::ChaCha12Rng::seed_from_u64(seed);
         let answered = Vec::new();
@@ -28,16 +29,17 @@ impl Game {
             dataset,
             answered,
             rng,
-            current_question,
+            current_question_index: current_question,
         }
     }
 
     pub fn current_question(&self) -> &Question {
-        self.current_question
+        &self.dataset.questions[self.current_question_index]
     }
 
     pub fn submit_answer(&mut self, answer: String) -> f32 {
-        let points = match &self.current_question.question_type {
+        let question = self.current_question();
+        let points = match &question.question_type {
             QuestionType::Freetext(f) => {
                 if f.answer == answer {
                     1.0
@@ -47,18 +49,18 @@ impl Game {
             }
         };
         self.answered.push(AnsweredQuestion {
-            question_id: self.current_question.id.clone(),
+            question_id: question.id.clone(),
             points,
         });
         if points > 0.0 {
-            self.current_question = generate_next_question(&mut self.rng, &self.dataset);
+            self.current_question_index = generate_next_question(&mut self.rng, &self.dataset);
         }
         points
     }
 }
 
-fn generate_next_question<'a>(rng: &mut rand_chacha::ChaCha12Rng, dataset: &'a Dataset) -> &'a Question {
+fn generate_next_question<'a>(rng: &mut rand_chacha::ChaCha12Rng, dataset: &'a Dataset) -> usize {
     let sz = dataset.questions.len();
     let next_id = rng.random_range(0..sz);
-    &dataset.questions[next_id]
+    next_id
 }

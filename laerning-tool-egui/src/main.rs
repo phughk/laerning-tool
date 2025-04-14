@@ -1,3 +1,5 @@
+use crate::app::App;
+
 mod app;
 
 #[cfg(target_arch = "wasm32")]
@@ -60,5 +62,5 @@ fn main() {
         native_options,
         Box::new(|cc| Ok(Box::new(App::new(cc)))),
     )
-        .unwrap();
+    .unwrap();
 }
