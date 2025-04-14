@@ -1,6 +1,7 @@
 use crate::dataset::{Dataset, Question, QuestionType};
 use rand::{Rng, RngCore, SeedableRng};
 use std::sync::Arc;
+use text_distance::DamerauLevenshtein;
 
 pub struct Game {
     pub dataset: Arc<Dataset>,
@@ -39,13 +40,27 @@ impl Game {
 
     pub fn submit_answer(&mut self, answer: String) -> f32 {
         let question = self.current_question();
-        let points = match &question.question_type {
+        let points = match &question.question {
             QuestionType::Freetext(f) => {
-                if f.answer == answer {
-                    1.0
-                } else {
-                    0.0
+                // find a Jaccard similarity that passes threshold
+                let mut ret = 0.0;
+                let lowercase_provided_answer = answer.to_lowercase();
+                for a in &f.answers {
+                    let a = a.to_lowercase();
+                    // let jaccard =
+                    //     stringmetrics::jaccard(a.chars(), lowercase_provided_answer.chars());
+                    const OPTIMAL_STRING_ALIGNMENT: bool = true;
+                    let similarity = DamerauLevenshtein {
+                        src: a,
+                        tar: lowercase_provided_answer.clone(),
+                        restricted: OPTIMAL_STRING_ALIGNMENT,
+                    }
+                    .normalized_similarity();
+                    if similarity >= f.tolerance as f64 {
+                        ret = 1.0;
+                    }
                 }
+                ret
             }
         };
         self.answered.push(AnsweredQuestion {
