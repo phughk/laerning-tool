@@ -1,0 +1,9 @@
+{
+  "id": "28b7e1be-4081-44f4-a6a1-a8e2533796ff",
+  "name": "Tagalog words",
+  "author": "Hugh Kaznowski / Pinoy Dictionary",
+  "description": "A collection of Tagalog words and their English translations. The source dataset can be found in https://github.com/phughk/tagalog-scraper/blob/main/split_definitions.json .",
+  "version": "1.0.0",
+  "questions": [
+  ]
+}
