@@ -19,6 +19,19 @@ pub struct Question {
     pub question: QuestionType,
 }
 
+impl Question {
+    pub fn prompt(&self) -> &str {
+        match &self.question {
+            QuestionType::Freetext(f) => &f.question_prompt,
+        }
+    }
+    pub fn answers(&self) -> Vec<String> {
+        match &self.question {
+            QuestionType::Freetext(f) => f.answers.clone(),
+        }
+    }
+}
+
 /// Question types are actually matchers, hence matchers are not included as separate struct
 /// and question types can overlap
 #[derive(Serialize, Deserialize, Debug)]

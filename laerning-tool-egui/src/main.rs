@@ -1,6 +1,9 @@
 use crate::app::App;
 
 mod app;
+mod timeout_widget;
+mod ui_answer;
+mod ui_question;
 
 #[cfg(target_arch = "wasm32")]
 fn main() {

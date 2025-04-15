@@ -1,13 +1,19 @@
+use crate::timeout_widget::TimeoutBarWidget;
+use crate::ui_answer::draw_answer;
+use crate::ui_question::draw_question;
 use eframe::{CreationContext, Frame};
-use egui::Context;
+use egui::{Color32, Context, Widget};
 use egui_extras::{Size, StripBuilder};
 use laerning_tool::dataset::{Dataset, FreetextQuestion, Question, QuestionType};
-use laerning_tool::game::Game;
+use laerning_tool::game::{AnswerResult, Game};
 use std::sync::Arc;
+use std::time::Duration;
 
 pub struct App {
     pub dataset: Option<Arc<Dataset>>,
     pub game: Option<Game>,
+    pub answer_prompt: String,
+    pub progress_bar: TimeoutBarWidget,
 }
 
 impl App {
@@ -42,6 +48,8 @@ impl App {
         let mut app = Self {
             dataset: Some(dataset),
             game: Some(game),
+            answer_prompt: String::with_capacity(1024),
+            progress_bar: TimeoutBarWidget::new(Duration::from_secs(5)),
         };
         app
     }
@@ -59,12 +67,25 @@ impl App {
             StripBuilder::new(ui)
                 .size(Size::initial(32.0))
                 .size(Size::remainder())
+                .size(Size::initial(32.0))
                 .vertical(|mut strip| {
                     strip.cell(|ui| {
-                        ui.label("Question goes here");
+                        draw_question(ui, self.game.as_ref().unwrap().current_question().prompt())
                     });
                     strip.cell(|ui| {
-                        ui.label("Answer goes here");
+                        if let Some(answer) = draw_answer(ui, &mut self.answer_prompt) {
+                            match self.game.as_mut().unwrap().submit_answer(answer) {
+                                AnswerResult::Correct(_) => {
+                                    self.progress_bar.reset(Color32::LIGHT_GREEN)
+                                }
+                                AnswerResult::Incorrect(_) => {
+                                    self.progress_bar.reset(Color32::LIGHT_RED)
+                                }
+                            }
+                        }
+                    });
+                    strip.cell(|ui| {
+                        self.progress_bar.ui(ui);
                     })
                 })
         });

@@ -38,7 +38,7 @@ impl Game {
         &self.dataset.questions[self.current_question_index]
     }
 
-    pub fn submit_answer(&mut self, answer: String) -> f32 {
+    pub fn submit_answer(&mut self, answer: String) -> AnswerResult {
         let question = self.current_question();
         let points = match &question.question {
             QuestionType::Freetext(f) => {
@@ -69,9 +69,16 @@ impl Game {
         });
         if points > 0.0 {
             self.current_question_index = generate_next_question(&mut self.rng, &self.dataset);
+            AnswerResult::Correct(points)
+        } else {
+            AnswerResult::Incorrect(points)
         }
-        points
     }
+}
+
+pub enum AnswerResult {
+    Correct(f32),
+    Incorrect(f32),
 }
 
 fn generate_next_question<'a>(rng: &mut rand_chacha::ChaCha12Rng, dataset: &'a Dataset) -> usize {
