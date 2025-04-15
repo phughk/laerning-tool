@@ -23,14 +23,16 @@ impl App {
                     id: "abc-123".to_string(),
                     question: QuestionType::Freetext(Box::new(FreetextQuestion {
                         question_prompt: "What is my name".to_string(),
-                        answer: "You".to_string(),
+                        answers: vec!["You".to_string()],
+                        tolerance: 0.9,
                     })),
                 },
                 Question {
                     id: "def-456".to_string(),
                     question: QuestionType::Freetext(Box::new(FreetextQuestion {
                         question_prompt: "What is your name".to_string(),
-                        answer: "Me".to_string(),
+                        answers: vec!["Me".to_string()],
+                        tolerance: 0.9,
                     })),
                 },
             ],

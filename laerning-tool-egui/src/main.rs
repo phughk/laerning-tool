@@ -58,7 +58,7 @@ fn main() {
         ..Default::default()
     };
     eframe::run_native(
-        "Warsaw 9C40",
+        "Laerning Tool",
         native_options,
         Box::new(|cc| Ok(Box::new(App::new(cc)))),
     )
