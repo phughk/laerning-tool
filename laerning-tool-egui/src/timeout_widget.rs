@@ -43,11 +43,13 @@ impl Widget for &mut TimeoutBarWidget {
 
         let filled_rect = Rect::from_min_size(rect.min, Vec2::new(filled_width, self.height));
 
-        let visuals = ui.style().visuals.clone();
-        let bg_color = visuals.extreme_bg_color; // optional background color
+        // let visuals = ui.style().visuals.clone();
+        // let bg_color = visuals.extreme_bg_color; // optional background color
 
-        ui.painter().rect_filled(rect, 0.0, bg_color); // background
-        ui.painter().rect_filled(filled_rect, 0.0, self.color); // progress
+        if progress > 0.0 {
+            // ui.painter().rect_filled(rect, 0.0, bg_color); // background
+            ui.painter().rect_filled(filled_rect, 0.0, self.color); // progress
+        }
 
         response
     }
